@@ -1,0 +1,149 @@
+{% extends 'HouseListing/default_base.html' %} 
+{% load static %} {% block header%}
+<style>
+  .card-animate {
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+  }
+
+  .card-animate:hover {
+    -webkit-transform: translateY(calc(-1.5rem / 5));
+    transform: translateY(calc(-1.5rem / 5));
+    -webkit-box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+    box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+  }
+</style>
+{% endblock header %} {% block body %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="container-fluid my-4">
+      <div class="row">
+        <a
+          href="{{request.META.HTTP_REFERER}}"
+          class="btn btn-outline-dark btn-sm ml-auto"
+          style="margin-right: 20px; margin-bottom: 10px; border-radius: 5px"
+        >
+          <i class="icon-arrow-left15 mr-1"></i>
+          Go Back</a
+        >
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div
+              class="card-header header-elements-inline"
+              style="background-color: rgb(50, 65, 72); color: #fff"
+            >
+              <h3 class="card-title">
+                <i class="icon-user" style="font-size: 25px"></i>
+                &nbsp;My Profile
+              </h3>
+              <div class="header-elements">
+                <div class="list-icons">
+                  <a class="list-icons-item" data-action="reload"></a>
+                  <a class="list-icons-item" data-action="remove"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <img
+                    src="{% static 'HouseListing/images/user.png' %} "
+                    class="img-fluid user-img"
+                  />
+                </div>
+                <div class="col-md-8">
+                  <div class="container-fluid">
+                    <table class="ml-4">
+                      <tr>
+                        <td style="padding-bottom: 10px"><b>Full Name:</b></td>
+                        <td style="padding-bottom: 10px" class="pl-4">
+                         {{request.user.userprofile.full_name}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-bottom: 10px"><b>Phone Number:</b></td>
+                        <td style="padding-bottom: 10px" class="pl-4">
+                          {{request.user.userprofile.phone_number}}
+                        </td>
+                      </tr>
+                    </table>
+                    <a
+                      href="#"
+                      class="btn btn-outline-dark btn-sm my-2 ml-4"
+                      style="border-radius: 5px"
+                    >
+                      <i class="icon-pencil5 mr-1"></i> Edit profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="col-md-12 align-items-center">
+                <table class="ml-4">
+                  <tr>
+                    <td style="padding-bottom: 10px">
+                      <b> <i class="icon-envelop5 mr-1"></i> email:</b>
+                    </td>
+                    <td style="padding-bottom: 10px" class="pl-4">
+                      {{request.user.username}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding-bottom: 10px">
+                      <b>
+                        <i class="icon-user mr-1"></i>
+                        Account Type:</b
+                      >
+                    </td>
+                    <td style="padding-bottom: 10px" class="pl-4">
+                      {{request.user.userprofile.user_account_type}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 10px">
+                      <b>
+                        <i class="icon-history mr-1"></i>
+                        Status:</b
+                      >
+                    </td>
+                    <td style="padding-bottom: 10px" class="pl-4">
+                      
+                      {% if request.user.userprofile.account_verified %}
+
+                        <span class="badge badge-success">
+                          Verified
+                        </span>
+                        
+                      {% else %}
+
+                       <span class="badge badge-warning">
+                          Pending
+                        </span>
+                        
+                      {% endif %}
+                        
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

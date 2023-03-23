@@ -1,0 +1,447 @@
+{% extends 'HouseListing/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block body %}
+
+       <section class="hero-wrap style1">
+        <div class="container-fluid">
+          <div class="row gx-5 align-items-center">
+            <div class="col-lg-12">
+              <div class="hero-img-wrap">
+                <div class="hero-bg-one bg-f">
+                   <div class="container-fluid">
+                    <div class="row pt-100 mb-40">
+                      <div class="col-md-12 text-center">
+                        <h1 class="text-white main-text" style="text-shadow: 0 0px 5px rgb(0 0 0);font-weight: bold;">
+                          Find Your Next Home Here...
+                        </h1>
+                      </div>
+                    </div>
+                      <div class="row">
+                          <div class="col-md-12">
+                            <div class="tab" role="tabpanel">
+                             <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Buy</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Rent</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Lease</a>
+                                </li>
+                               
+                              </ul>
+                            </div>
+
+                              <!-- Tab panes -->
+                              <div class="tab-content tabs">
+                                <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <form class="row align-items-center justify-content-center" action="{% url 'HouseListing:search_property_for_sale' %}" method="get">
+                                        
+                                      <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                          <input type="text" name="for_sale_location" class="form-control form-control-lg" placeholder="Nairobi, 30" aria-label="Nairobi, 30" aria-describedby="button-addon2">
+                                          <button class="btn btn-primary btn-sm" type="submit" id="button-addon2" style="padding:0 10px!important; background-color: #EC3323;">
+                                            <i class="flaticon-search"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                  <form class="row align-items-center justify-content-center" method="get" action="{% url 'HouseListing:search_property_for_rent' %}">
+                                      
+                                      <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                          <input type="text" name="for_rent_location" class="form-control form-control-lg" placeholder="Nairobi, 30" aria-label="Nairobi, 30" aria-describedby="button-addon2">
+                                          <button class="btn btn-primary btn-sm" type="submit" id="button-addon3" style="padding:0 10px!important; background-color: #EC3323;">
+                                            <i class="flaticon-search"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                                  <form class="row align-items-center justify-content-center" method="get" action="{% url 'HouseListing:search_property_for_lease' %}">
+                                      
+                                      <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                          <input type="text" name="for_lease_location" class="form-control form-control-lg" placeholder="Nairobi, 30" aria-label="Nairobi, 30" aria-describedby="button-addon2">
+                                          <button class="btn btn-primary btn-sm" type="submit" id="button-addon4" style="padding:0 10px!important; background-color: #EC3323;">
+                                            <i class="flaticon-search"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>                                                   
+                </div>
+                    
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+       
+
+      <section class="property-slider-wrap pt-100">
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" data-aos="fade-up" data-aos-duration="1200"
+                        data-aos-delay="200">
+                        <a href="{% url 'HouseListing:listings_for_sale' %}">
+                          <div class="property-card style3 stylemine"> 
+                            <div class="property-info">
+                              <center>
+                                <img class="" style="object-fit:cover;max-height:160px;min-height:160px;" src="{% static 'HouseListing/images/leasehome.webp' %}" alt="Card image cap">
+
+                                <h3>Buy a Home</h3>
+
+                                <p>
+                                  Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else.
+                                </p>
+
+                                <a href="{% url 'HouseListing:listings_for_sale' %}"  class="btn style3 my-1">Browse Homes</a>
+                              </center>
+                                                                                                
+                              </div>
+                          </div>
+                        </a>
+                    </div>
+                  
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" data-aos="fade-up" data-aos-duration="1200"
+                        data-aos-delay="200">
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'HouseListing:create_listing_listing' %}" id="see_options2">
+                        
+                        {% else %}                                
+                          <a href="" id="see_options2" data-bs-toggle="modal"
+                              data-bs-target="#signIn">
+                        {% endif %}
+                          <div class="property-card style3 stylemine"> 
+                            <div class="property-info">
+                              <center>
+                                <img class="" style="object-fit:cover;max-height:160px;min-height:160px;" src="{% static 'HouseListing/images/salehome.webp' %}" alt="Card image cap">
+
+                                <h3>Sell a Home</h3>
+
+                                <p>
+                                  No matter what path you take to sell your home, we can help you navigate a successful sale. <br> We are great at it.
+                                </p>
+
+                                
+                                {% if request.user.is_authenticated %}
+
+                                <a href="{% url 'HouseListing:create_listing_listing' %}" id="see_options"  class="btn style3 my-1">See Options</a>
+                                
+                                {% else %}                                
+                                  <a href="" id="see_options" data-bs-toggle="modal"
+                                      data-bs-target="#signIn" class="btn style3 my-1">See Options</a>
+                                {% endif %}
+                                  
+
+                              </center>
+                                                                                                
+                              </div>
+                          </div>
+                        </a>
+                    </div>
+                  
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" data-aos="fade-up" data-aos-duration="1200"
+                        data-aos-delay="200">
+                        <a href="{% url 'HouseListing:listings_for_rent' %}">
+                          <div class="property-card style3 stylemine"> 
+                            <div class="property-info">
+                              <center>
+                                <img class="" style="object-fit:cover;max-height:160px;min-height:160px;" src="{% static 'HouseListing/images/renthouse.webp' %}" alt="Card image cap">
+
+                                <h3>Rent a Home</h3>
+
+                                <p>
+                                  Discover a place that checks all of your boxes. Filter your rental search, and find exactly what you’re looking for.
+                                </p>
+
+                                <a href="{% url 'HouseListing:listings_for_rent' %}"  class="btn style3 my-1">Find Rentals</a>
+                              </center>
+                                                                                                
+                              </div>
+                          </div>
+                        </a>
+                    </div>
+                  
+                </div>
+            </div>
+        </section>
+      <section class="property-slider-wrap pt-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
+                        <div class="section-title style1 text-center mb-40">
+                            <h2>Featured Listings</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                  {% for list in all_listings  %}
+
+                    <div class="col-xl-4 col-lg-6 col-md-6" data-aos="fade-up" data-aos-duration="1200"
+                        data-aos-delay="200">
+                        <a href="{% url 'HouseListing:listing_details' list.slug %}">
+                          <div class="property-card style3">
+                              <div class="property-img">
+                                  <img class="card-img-top" style="object-fit:cover;max-height:280px;min-height:280px;" src="{{list.featured_image.url}}" alt="Card image cap">
+
+                                  <span class="property-status">{{list.status}}</span>
+                              </div>
+                              <div class="property-info">
+                                  <div class="property-status-wrap">
+                                      <span class="property-state"><i class="flaticon-home"></i>{{list.type.name}}</span>
+                                      <p class="property-price">KES {{list.price|intcomma}} 
+                                        {% if list.type.name != 'Land' and list.status.property_status != 'For Sale' %}  
+                                          /<span>month</span>
+                                        {% endif %}
+                                      </p>
+                                  </div>
+                                  <h3>
+                                      {{list.property_title}}
+                                  </h3>
+                                  <p>
+                                      <i class="flaticon-location"></i>{{list.city.city_name}}
+                                  </p>
+                                  <ul class="property-metainfo list-style">
+                                      
+                                      {% if list.type.name != 'Land' and list.type.name != 'Office Space' %}                                      
+                                      <li><i class="flaticon-double-bed"></i>{{list.bedrooms}}</li>
+                                      <li><i class="flaticon-bath-tub"></i>{{list.bathrooms}}</li>
+                                      {% endif %}
+                                        
+                                      <li><i class="flaticon-square"></i>{{list.area_size}} sqft</li>
+                                  </ul>
+                              </div>
+                          </div>
+                        </a>
+                    </div>
+                  {% endfor %}
+                </div>
+            </div>
+        </section>
+
+    
+
+
+      <section class="city-wrap pt-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
+              <div class="section-title style1 text-center mb-40">
+                <h2>Featured Neighbourhoods</h2>
+              </div>
+            </div>
+          </div>
+          <div class="city-slider-one owl-carousel">
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Kitengela' %}">
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+              
+                <img
+                  src="{% static 'HouseListing/images/city1.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Kitengela</h3>
+              
+              </div>
+            </a>
+            <a href="{% url 'HouseListing:search_listing_town' 'Rongai' %}">
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/city2.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Rongai</h3>
+              </div>
+            </a>
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Kilimani' %}">            
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/city3.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Kilimani</h3>
+              </div>
+            </a>
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Thika Rd' %}">      
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/city4.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Thika Rd</h3>
+              </div>
+            </a>
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Embakasi' %}">      
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/city5.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Embakasi</h3>
+              </div>
+            </a>
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Waiyaki Way' %}">      
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/city6.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Waiyaki Way</h3>
+              </div>
+            </a>
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Kiambu Rd' %}">                    
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/city7.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Kiambu Rd</h3>
+              </div>
+            </a>
+
+            <a href="{% url 'HouseListing:search_listing_town' 'Syokimau' %}">      
+              <div
+                class="city-card style2"
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{% static 'HouseListing/images/syokimau.jpeg' %}"
+                  alt="Image"
+                  class="cityimg"
+                />
+                <p>Featured <i class="flaticon-star"></i></p>
+                <h3 class="text-white">Syokimau</h3>
+              </div>
+            </a>
+              
+          </div>
+        </div>
+      </section>
+
+ 
+
+
+      <section class="newsletter-wrap my-4 d-none d-md-block">
+          <div class="row">
+            <div class="col-xl-12  col-lg-12">
+                  
+                <div class="sign-up-container">
+                  <div class="envelope">
+                    <div class="paper">
+                      <h1>Subscribe our Newslatter</h1>
+                      <form class="sign-up-form">
+                        <input type="email" name="email" placeholder="Enter Your Email Here" required class="text-input"/>
+                        <button type="submit" class="button">Sign up</button>
+                      </form>
+                    </div>
+                    <div class="bottom-flap"></div>
+                  </div>
+                  <div class="thanks-text"> <span>Thanks for subscribing</span></div>
+                </div>          
+            </div>
+          </div>       
+      </section>
+
+
+
+    
+{% endblock body %}
+
+
+{% block scripts %}
+<!-- <script src="{% static 'HouseListing/assets/js/jquery.min.js' %}"></script> -->
+<script>
+  
+
+  $(document).ready(function() {
+    $('.sign-up-form').on('submit', submit);
+    $('.reset-button').on('click', reset);
+  });
+
+  function submit(e) {
+    $('.sign-up-container').addClass('submitted');
+    $('.thanks-text').css('visibility', 'visible');
+    e.preventDefault();
+  }
+
+  function reset() {
+    $('.sign-up-container').removeClass('submitted');
+    $('.sign-up-form')[0].reset();
+  }
+</script>
+      
+{% endblock scripts %}
+
+
+    

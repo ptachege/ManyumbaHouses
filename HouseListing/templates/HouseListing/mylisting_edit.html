@@ -1,0 +1,217 @@
+{% extends my_template %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/selects/select2.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_select2.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/inputs/inputmask.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/validation/validate.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/extensions/cookie.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/components_collapsible.js' %}"></script>
+<!-- <script src="{% static 'HouseListing/global_assets/js/demo_pages/form_checkboxes_radios.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/switchery.min.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/switch.min.js '%}"></script> -->
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/wizards/steps.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_wizard.js' %}"></script>
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/purify.min.js' %}"></script> -->
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/sortable.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/fileinput.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/uploader_bootstrap.js' %}"></script>
+
+
+
+
+{% endblock header %}
+
+{% block body %}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline" style="background-color: #292f3a; color: #fff">
+                <h3 class="card-title">
+                    <i class="icon-pencil7" style="font-size: 25px"></i>
+                    &nbsp;Edit {{property.property_title}}
+                </h3>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a class="list-icons-item" data-action="reload"></a>
+                        <a class="list-icons-item" data-action="remove"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header bg-white header-elements-inline">
+                <h4 class="card-title text-center"> <i class="icon-user-plus"></i> Register Listing</h4>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a class="list-icons-item" data-action="collapse"></a>
+                        <a class="list-icons-item" data-action="reload"></a>
+                        <a class="list-icons-item" data-action="remove"></a>
+                    </div>
+                </div>
+            </div>
+
+           {% include 'HouseListing/include_edit_listing.html' %}
+           
+        </div>
+    </div>
+</div>
+
+
+<script>
+    window.onload = function () {
+
+        // This is a function to called by eventlistners
+        function eventstoexecute() {
+            console.log('status chnage');
+            let status = $("#id_status").val();
+
+
+            let for_rent_id_from_db = $("#for_rent").val();
+
+
+            let if_for_rent = $('#if_for_rent')
+            let if_not_for_rent = $('#if_not_for_rent')
+
+
+            if (status == for_rent_id_from_db) {
+                if_for_rent.css("display", "block");
+                if_not_for_rent.css("display", "none");
+            } else {
+                if_not_for_rent.css("display", "block");
+                if_for_rent.css("display", "none");
+
+            }
+
+            // again
+            let type = $("#id_type").val();
+            let for_rent = $("#for_rent").val();
+            let apartment_id = $("#apartment_id").val();
+
+            if (type == apartment_id && status == for_rent) {
+                $('#managebymanyumbadiv').css('display', 'block');
+                $('#price_block').css('display', 'none');
+            }
+            else {
+                $('#managebymanyumbadiv').css('display', 'none');
+                $('#price_block').css('display', 'block');
+            }
+        }
+
+
+        function event2fortype() {
+
+            console.log('Type chnage');
+            let land_id = $("#land_id").val();
+            let id_type = $("#id_type").val();
+            let office_id = $("#office_id").val();
+
+            let type = $("#id_type").val();
+            let status = $("#id_status").val();
+            let for_rent = $("#for_rent").val();
+            let apartment_id = $("#apartment_id").val();
+            console.log(for_rent);
+
+
+            // block which toggles
+            toggle_block = $('#house_fields')
+            toggle_block2 = $('#media-section')
+            toggle_block3 = $('#house-amenity-section')
+            toggle_block4 = $('#land-amenity-section')
+            toggle_block5 = $('#office-amenity-section')
+
+            // area-size
+            area_size = $('#area-size')
+            land_size = $('#land-size')
+
+            // other_image_href
+            other_image_href = $('#other_image_href')
+
+
+            if (id_type == land_id) {
+                area_size.css("display", "none");
+                land_size.css("display", "block");
+                toggle_block.css("display", "none");
+                toggle_block2.css("display", "none");
+                toggle_block3.css("display", "none");
+                toggle_block4.css("display", "block");
+                toggle_block5.css("display", "none");
+
+                // change text to land related thing
+                other_image_href.html("Other Property Images <i class='icon-chevron-down float-right'></i>");
+
+
+            } else if (id_type == office_id) {
+                area_size.css("display", "block");
+                land_size.css("display", "none");
+                toggle_block.css("display", "none");
+                toggle_block2.css("display", "none");
+                toggle_block3.css("display", "none");
+                toggle_block4.css("display", "none");
+                toggle_block5.css("display", "block");
+
+
+                other_image_href.html("Other Property Images <i class='icon-chevron-down float-right'></i>");
+            } else {
+                area_size.css("display", "block");
+                land_size.css("display", "none");
+                toggle_block.css("display", "block");
+                toggle_block2.css("display", "block");
+                toggle_block3.css("display", "block");
+                toggle_block4.css("display", "none");
+                toggle_block5.css("display", "none");
+
+                other_image_href.html("Living Room <i class='icon-chevron-down float-right'></i>");
+            }
+
+
+
+            if (type == apartment_id && status == for_rent) {
+                console.log('flipped');
+                $('#managebymanyumbadiv').css('display', 'block');
+                $('#price_block').css('display', 'none');
+            }
+            else {
+                $('#managebymanyumbadiv').css('display', 'none');
+                $('#price_block').css('display', 'block');
+            }
+
+        }
+        eventstoexecute();
+        event2fortype();
+
+
+
+
+        // event listener
+        document.getElementById("id_status").onchange = function () {
+            eventstoexecute()
+        }
+
+        document.getElementById("id_type").onchange = function () {
+            event2fortype()
+        }
+    }
+
+
+</script>
+
+
+
+
+
+
+
+{% endblock body %}

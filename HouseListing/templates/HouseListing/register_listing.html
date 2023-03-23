@@ -1,0 +1,417 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/selects/select2.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_select2.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/inputs/inputmask.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/validation/validate.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/extensions/cookie.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/components_collapsible.js' %}"></script>
+<!-- <script src="{% static 'HouseListing/global_assets/js/demo_pages/form_checkboxes_radios.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/switchery.min.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/switch.min.js '%}"></script> -->
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/wizards/steps.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_wizard.js' %}"></script>
+    <!-- <script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/purify.min.js' %}"></script> -->
+    
+    <script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/sortable.min.js' %}"></script>
+    
+    <script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/fileinput.min.js' %}"></script>
+    
+    <script src="{% static 'HouseListing/global_assets/js/demo_pages/uploader_bootstrap.js' %}"></script>
+
+
+
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="card my-4">
+        <div class="card-header bg-white header-elements-inline">
+            <h4 class="card-title text-center"> <i class="icon-user-plus"></i> Register Listing</h4>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <form class="wizard-form steps-validation" action="{% url 'HouseListing:create_listing' %}" method="POST" enctype="multipart/form-data" id="myform" data-fouc>
+            {% csrf_token %}
+            <h6>General Information</h6>
+            <fieldset>
+    
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Property Title: <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" id="property_title" placeholder="property title" name="property_title">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description <span class="text-danger">*</span>
+                                
+                            </label>
+                        <textarea name="description"  class="form-control" id="description" cols="30" rows="3"></textarea>                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Type: <span class="text-danger">*</span></label>
+                            {{form.type}}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Status: <span class="text-danger">*</span></label>
+                            {{form.status}}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Publish:</label>
+                             <select  name="publish" required data-placeholder="Publish?" class="form-control custom-select">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>     
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Price: <span class="text-danger">*</span></label>
+                            <input type="number" required class="form-control" id="price" placeholder="property price" name="price">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Area Size:</label>
+                            <input type="number" value="0" class="form-control" id="area_size" placeholder="optional" name="area_size">                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Rooms: <span class="text-danger">*</span></label>
+                            <input type="number"  class="form-control" required  placeholder="Number of Rooms" name="rooms">                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Bedrooms:</label>
+                            <input type="number" value="0" class="form-control"  placeholder="Number of bedrooms" name="bedrooms">                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Bathrooms:</label>
+                            <input type="number" value="0" class="form-control" id="bathrooms" placeholder="Number of bathrooms" name="bathrooms">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Parking Spots:</label>
+                            <input type="number" value="0" class="form-control" id="garages" placeholder="Parking Spots" name="garages">
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Year Built:</label>
+                            <input type="number" required class="form-control"  placeholder="Enter Year Build" name="year_built">                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>City:</label>
+                            {{form.city}}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Street:</label>
+                            <input type="text" class="form-control" id="street" placeholder="optional" name="street">                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <h6>Floor Plan</h6>
+            <fieldset>
+                <div class="row">                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Plan title:</span></label>
+                            <input type="text" class="form-control" id="plan_title" placeholder="Enter Plan Name *" name="plan_title">                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Size:</span></label>
+                            <input type="text" value="0" class="form-control"  placeholder="Plan Size" name="plan_size">                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Number Of Bedrooms</label>
+                            <input type="text" class="form-control" value="0"  placeholder="Number of bedrooms" name="plan_bedrooms">                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Number Of Bathrooms</label>
+                            <input type="text" class="form-control" value="0" id="plan_bathrooms" placeholder="Number of bathrooms" name="plan_bathrooms">                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Description: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control"  placeholder="Description" name="plan_description">                        </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        
+                            <div class="form-group">
+                                <label>Plan Image:</label>
+                                <input type="file" class="file-input" name="plan_image">                        </div>
+                </div>
+            </fieldset>
+
+            <h6>Amenities & Features</h6>
+            <fieldset>
+               <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="air_conditioner" class="form-check-input">
+                                    Water
+                                </label>
+                            </div>
+                            
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="car_parking" class="form-check-input">
+                                    Electricity
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="laundry_room" class="form-check-input">
+                                    WFI
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="heater" class="form-check-input">
+                                    Ac
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="Drier" class="form-check-input">
+                                    Gateman
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="Microwave" class="form-check-input">
+                                    Parking
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="Swimming Pool" class="form-check-input">
+                                    Swimming Pool
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="Sauna" class="form-check-input">
+                                    Balcony
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="alarm" class="form-check-input">
+                                    Gym
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="balcony" class="form-check-input">
+                                    Play Area
+                                </label>
+                            </div>
+
+                            
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="internet" class="form-check-input">
+                                    Internet
+                                </label>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>    
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Video Url:</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">https://</span>
+                                </span>
+                                <input type="text" class="form-control" id="plan_title" placeholder="Enter the video url" name="video_url">                            </div>
+                            </div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>360 Tour Url:</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">https://</span>
+                                </span>
+                            <input type="text" class="form-control"  placeholder="Enter Tour Url" name="tour_url">                            </div>
+                        </div>
+                </div>
+
+
+            </fieldset>
+
+            <h6>Media & Gallary</h6>
+            <fieldset>
+               <div class="row mt-2">
+                <div class="col-lg-12">
+                    <div id="accordion-default">
+								<div class="card">
+									<div class="card-header">
+										<h6 class="card-title">
+											<a data-toggle="collapse" class="text-body" href="#accordion-item-default1">Main Display Image <i class="icon-chevron-down float-right"></i></a>
+										</h6>
+									</div>
+
+									<div id="accordion-item-default1" class="collapse show" data-parent="#accordion-default">
+										<div class="card-body">                                                    
+                                                <p class="text-muted">Use this section to upload Main Display Image(Featured Image) Of property</p>
+                                                    <div class="form-group">
+                                                <input type="file" class="file-input" required name="featured_image" data-fouc>
+                                        </div>
+										</div>
+									</div>
+								</div>
+
+								<div class="card">
+									<div class="card-header">
+										<h6 class="card-title">
+											<a class="collapsed text-body" data-toggle="collapse" href="#accordion-item-default2">Living Room <i class="icon-chevron-down float-right"></i></a>
+										</h6>
+									</div>
+
+									<div id="accordion-item-default2" class="collapse" data-parent="#accordion-default">
+										<div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    
+                                                            <p class="text-muted">Use this section to upload living room sections of the property</p>
+                                                                <div class="form-group">
+                                                                    <input type="file" class="file-input" multiple="multiple" name="living_room_media" data-fouc>
+                                                                    <span class="form-text text-muted">Click on the browse button to select images to upload.</span>
+                                                        
+                                                            <!-- end card -->
+                                                        </div> <!-- end col -->
+                                                    </div>
+                                                </div>
+										</div>
+									</div>
+								</div>
+
+								<div class="card">
+									<div class="card-header">
+										<h6 class="card-title">
+											<a class="collapsed text-body" data-toggle="collapse" href="#accordion-item-default3">Bedrooms <i class="icon-chevron-down float-right"></i></a>
+										</h6>
+									</div>
+
+									<div id="accordion-item-default3" class="collapse" data-parent="#accordion-default">
+										<div class="card-body">
+                                             <div class="row">
+                                                <div class="col-lg-12">
+                                                    <input type="file" class="file-input" multiple="multiple" name="bedroom_media" data-fouc>
+                                                    <span class="form-text text-muted">Click on the browse button to select images to upload.</span>
+                                                </div> <!-- end col -->
+                                            </div>
+										</div>
+									</div>
+								</div>
+
+								<div class="card">
+									<div class="card-header">
+										<h6 class="card-title">
+											<a class="collapsed text-body" data-toggle="collapse" href="#accordion-item-default4">Bathroom <i class="icon-chevron-down float-right"></i></a>
+										</h6>
+									</div>
+
+									<div id="accordion-item-default4" class="collapse" data-parent="#accordion-default">
+										<div class="card-body">
+                                             <div class="row">
+                                                <div class="col-lg-12">
+                                                    <input type="file" class="file-input" multiple="multiple" name="bathroom_media" data-fouc>
+                                                    <span class="form-text text-muted">Click on the browse button to select images to upload.</span>
+                                                </div> <!-- end col -->
+                                            </div>
+										</div>
+									</div>
+								</div>
+							</div>
+                            </div>
+                        
+
+                        </div>               
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% block scripts %}
+
+{% endblock scripts %}
+
+{% endblock body %}

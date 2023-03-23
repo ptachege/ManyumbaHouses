@@ -1,0 +1,109 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header %}
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/selects/select2.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_layouts.js '%}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/sortable.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/fileinput.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/uploader_bootstrap.js' %}"></script>
+
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid my-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+
+			<div class="card">
+				<div class="card-body">
+					<div class="col-md-12">
+						<form action="{% url 'HouseListing:manage_create_profile' %}" method="POST" enctype="multipart/form-data">
+							{% csrf_token %}
+							<fieldset>
+								<legend class="font-weight-semibold" style="font-size: 20px;"><i class="icon-user-tie mr-2"
+										style="font-size: 20px;"></i> Create Profile
+								</legend>
+
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Full Name:</label>
+											<input type="text" required name="full_name" placeholder="Your full name"
+												class="form-control border-teal border-1">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Phone Number:</label>
+											<input type="text" required name="phone_number" placeholder="Your phone number"
+												class="form-control border-teal border-1">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>User Type:</label>
+											<select name="user_type" required data-placeholder="Select User Type"
+												class="form-control  form-control-select2" data-fouc>
+												<option></option>
+												<option value="Property Seeker">Property Seeker</option>
+												<option value="Individual Seller">Individual Seller</option>
+												<option value="New Agency">New Agency</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+							
+								<div class="text-right">
+									<button type="submit" class="btn btn-primary">Save <i
+											class="icon-paperplane ml-2"></i></button>
+								</div>
+
+
+							</fieldset>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function () {
+$("#University").change(function () {
+	// alert('this');
+	var val = $(this).val();
+	if (val == "Moi") {
+		console.log(val);
+		$("#campus").html(
+			"<option value='Moi Main Campus'>Moi Main Campus</option><option value='Anex Campus'>Anex Campus</option>");
+		} else if (val == "Tuk") {
+		$("#campus").html(
+			"<option value='TUK Main Campus'>TUK Main Campus</option><option value='Tuk Mombasa'>Tuk Mombasa</option>");
+		} else if (val == "UON") {
+			$("#campus").html(
+				"<option value='UON Main Campus'>UON Main Campus</option><option value='UON Mombasa'>UON Mombasa</option>");
+		} else if (val == "item0") {
+			$("#size").html("<option value=''>--select one--</option>");
+		}
+});
+});
+
+
+</script>
+
+{% block scripts %}
+{% endblock scripts %}
+
+{% endblock body %}

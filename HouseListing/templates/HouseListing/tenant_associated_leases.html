@@ -1,0 +1,83 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load humanize %}
+
+
+{% block body %}
+    <div class="row my-4">
+
+        <div class="col-8 offset-md-2 text-center">
+           <div class="alert alert-info">
+            <h6>{{title}}</h6>
+           </div>       
+        </div>    
+        {% for lease in all_leases %}
+        <div class="col-md-4 col-sm-6">
+            <div class="card card-animate">
+                <a href="{% url 'HouseListing:tenant_property_details' lease.id %}" style="color: inherit;">
+                    <div class="card-body pt-4">    
+                        <div class="d-flex my-1" style="justify-content: space-between">
+                            <p class="" style="font-size: 13px; font-weight: 800; margin-bottom: 10px">
+                                Unit:
+                            </p>
+    
+                            <p class="mb-0">
+                                {{lease.apartment.property_title}} : : No. {{lease.house.house_code}}
+                            </p>
+                        </div>
+                        <div class="d-flex" style="justify-content: space-between">
+                            <p class="" style="font-size: 13px; font-weight: 800; margin-bottom: 10px">
+                                Status:
+                            </p>
+    
+                            <p class="mb-0">
+                                
+                                {% if lease.current_status %}
+                                    <span class="badge badge-success">
+                                        Active
+                                    </span>                                    
+                                {% else %}
+                                    <span class="badge badge-warning">
+                                        Vacated
+                                    </span>                                    
+                                    
+                                {% endif %}
+                                    
+                            </p>
+                        </div>
+                        <div class="d-flex" style="justify-content: space-between">
+                            <p class="" style="font-size: 13px; font-weight: 800; margin-bottom: 10px">
+                                lease_start_date:
+                            </p>
+    
+                            <p class="mb-0">
+                                {{lease.lease_end_date}}
+                            </p>
+                        </div>
+                        <div class="d-flex" style="justify-content: space-between">
+                            <p class="" style="font-size: 13px; font-weight: 800; margin-bottom: 10px">
+                                Balance:
+                            </p>
+    
+                            <p class="mb-0">
+                                Ksh {{lease.running_balance|intcomma}}
+                            </p>
+                        </div>
+                        <a href="{% url 'HouseListing:tenant_property_details' lease.id %}"
+                            class="btn btn-dark btn-block mt-3 mybg">Select</a>
+    
+                    </div>
+                </a>    
+            </div>
+        </div> 
+    
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">
+                <p><i class="icon-warning mr-2"></i> No Units associated to you.</p>
+            </div>
+        </div>
+        {% endfor %}
+    
+    </div>
+{% endblock body %}
+    

@@ -1,0 +1,341 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+
+ {% block header %}
+    <style>
+
+        .fw-medium {
+            font-weight: 500;
+        }
+        .avatar-sm {
+            height: 3rem;
+            width: 3rem;
+        }
+        .avatar-title {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background-color: #B11226;
+            color: #fff;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            font-weight: 500;
+            height: 100%;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+                .card-animate {
+            -webkit-transition: all .4s;
+            transition: all .4s;
+        }
+
+        .card-animate:hover {
+        -webkit-transform: translateY(calc(-1.5rem / 5));
+        transform: translateY(calc(-1.5rem / 5));
+        -webkit-box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        }
+    </style>
+ {% endblock header %}
+
+{% block body %}
+
+       <!-- start page title -->
+       <div class="breadcrumb-line breadcrumb-line-light header-elements-lg-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home5 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Dashboard</span>
+            </div>
+        </div>
+    </div>
+       <div class="container-fluid">       
+        <div class="row my-3">
+            
+            {% if not request.user.is_superuser and not request.user.userprofile %}
+            <div class="col-12">
+                <div class="alert alert-warning text-center">
+                    <h6> <i class="icon-warning mr-2"></i> <small>Some features are not available to you. This is because you need to create a profile and verify your account</small> </h6>
+                    <a href="{% url 'HouseListing:create_profile' 'manage' %}" id="verify" class="btn btn-outline-success">Create Profile
+                        <span id="spinner" class=""></span></a>
+                </div>
+            </div>
+
+            {% else %}
+                
+            {% if not request.user.is_superuser and not request.user.userprofile.account_verified %}
+            <div class="col-12">
+                <div class="alert alert-warning text-center">
+                    <h6> <i class="icon-warning mr-2"></i> <small>Some features are not available to you. This is because your
+                            account is unverified</small> </h6>
+                    <a href="{% url 'HouseListing:verify_account' 'manage' %}" id="verify" class="btn btn-outline-success">Verify
+                        <span id="spinner" class=""></span></a>
+                </div>
+            </div>
+            
+            {% endif %}
+            {% endif %}
+                
+            <div class="col-md-6">
+                <div class="card" style="background-color: #252B36; color: #fff;">
+                    <div class="card-body text-center">
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <div class="confetti-piece"></div>
+                        <h3 class="my-2 myzindex my-greetings">Hello, {{request.user.userprofile.full_name}} !</h3>
+                        <h6 class="my-3 myzindex">Welcome to your Overall dashboard.</h6>
+        
+                        <a href="{% url 'HouseListing:properties' %}" class="btn btn-outline-light my-2 myzindex">You have {{all_properties_count}} Properties</a>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-md-6">
+                <div class="card social-widget-card">
+                    <div class="card-body" style="padding-top: 5px">
+                        <div class="row b-b-light my-4">
+                            <div class="col-sm-6 text-center b-r-light my-3">
+                                <span>Account balance</span>
+                                <h4 class="counter mb-0">KSh. 1,936.00</h4>
+                            </div>
+                            <div class="col-sm-6 text-center my-3">
+                                <span>October Rent collection</span>
+                                <h4 class="counter mb-0">Ksh. 230.00</h4>
+        
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col text-center">
+                                <span>Accrued Rent</span>
+                                <h4 class="counter mb-0 text-danger">Ksh. 498,221.00</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="font-weight-bold">Properties Revenues This Month</h6>
+                        <div class="chart-container" style="min-height: 230px">
+                            <canvas id="overallchart4" height="360"></canvas>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 col-50 box-col-6 des-xl-50">
+                <div class="card social-widget-card">
+                    <div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+                        <div class="d-flex justify-content-center my-3">
+                            <i class="icon-wallet text-info mx-2" style="font-size: 2em"></i>
+                            <h6>Financial Summary</h6>
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding-top: 5px">
+                        <div class="redial-social-widget my-3 radial-bar-100" data-label="50%"
+                            style="background-image: linear-gradient(342deg, #00b5ec 4.77%, transparent 50%, transparent), linear-gradient(270deg, #00b5ec 50%, rgba(36, 105, 92, 0.1) 50%, rgba(36, 105, 92, 0.1));">
+                            <i class="font-primary">4.77%</i>
+                        </div>
+                        <br>
+                        <div class="progress-showcase my-3">
+                            <div class="progress sm-progress-bar" style="height: 20px">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0"
+                                    aria-valuemax="100" style="width: 4.77%; height: 20px; background-color: #00b5ec"></div>
+                            </div>
+                        </div>
+                        <br>
+                        <h5 class="b-b-light text-center font-weight-bold"
+                            style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 2px;">All PROPERTIES</h5>
+                        <div class="row my-3">
+                            <div class="col text-center b-r-light">
+                                <span>Total Collections</span>
+                                <h4 class="counter mb-0">KSh. 340.00</h4>
+                            </div>
+                            <div class="col text-center">
+                                <span>Total Billed</span>
+                                <h4 class="counter mb-0">Ksh. 6,820.00</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-50 box-col-6 des-xl-50">
+                <div class="card social-widget-card">
+                    <div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+                        <div class="d-flex justify-content-center my-3">
+                            <i class="icon-office text-info mx-2" style="font-size: 2em"></i>
+                            <h6>Units Summary</h6>
+                        </div>
+        
+                    </div>
+                    <div class="card-body" style="padding-top: 5px">
+                        <div class="redial-social-widget my-2 radial-bar-100" data-label="50%"
+                            style="background-image: linear-gradient(342deg, #00b5ec 93%, transparent 50%, transparent), linear-gradient(270deg, #00b5ec 50%, rgba(36, 105, 92, 0.1) 50%, rgba(36, 105, 92, 0.1));">
+                            <i class="font-primary">{{occupancy_percentage}}%</i>
+                        </div>
+                        <br>
+                        <div class="progress-showcase my-1">
+                            <div class="progress sm-progress-bar" style="height: 20px">
+                                <div class="progress-bar round-progress" role="progressbar" aria-valuenow="25" aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    style="width: {{property.calculate_occupancy}}%; height: 20px; background-color: #00b5ec">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <h5 class="b-b-light text-center font-weight-bold"
+                            style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 2px;">
+                            ALL PROPERTIES</h5>
+                        <div class="row my-3">
+                            <div class="col text-center text-danger b-r-light">
+                                <span class="font-weight-bold text-danger">Vacant Units</span>
+                                <h4 class="counter mb-0">{{vacant_units}}</h4>
+                            </div>
+                            <div class="col text-center">
+                                <span>Total Units</span>
+                                <h4 class="counter mb-0">{{all_houses}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 des-xl-50">
+                <div class="card card-animate social-widget-card">
+                    <div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+                        <div class="d-flex justify-content-center my-3">
+                            <i class="icon-users text-info mx-2" style="font-size: 2em"></i>
+                            <h6>Tenants Report</h6>
+                        </div>
+                        <div class="d-flex justify-content-start mx-4">
+                            <a class="btn btn-sm btn-dark" href="{% url 'HouseListing:tenants_list' %}">View
+                                All Tenants</a>
+                        </div>
+                    </div>
+                    <div class="card-body my-3 py-3">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-3 text-center">
+                                <span>All Tenants</span>
+                                <h3 class="font-weight-bold counter mb-0">{{all_tenants}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 des-xl-50">
+                <div class="card card-animate social-widget-card">
+                    <div class="card-body" style="padding-top: 5px">                      
+                        <h5 class="b-b-light text-center font-weight-bold"
+                            style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 2px;">
+                            Quick Stats</h5>
+                        <div class="row my-3">
+                            <div class="col text-center  b-r-light">
+                                <span class="font-weight-bold ">Approved Properties</span>
+                                <h4 class="counter mb-0">{{approved_properties}}</h4>
+                                <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">
+                                        <i class="ri-arrow-up-line align-middle"></i> {{approved_percentage|floatformat:0}} %
+                                    </span> of your properties</p>
+                            </div>
+                            <div class="col text-center">
+                                <span>Pending Properties</span>
+                                <h4 class="counter mb-0">{{pending_properties}}</h4>
+                                <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0">
+                                        <i class="ri-arrow-down-line align-middle"></i> {{pending_percentage|floatformat:0}} %
+                                    </span> of all your properties</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+{% endblock body %}
+
+{% block scripts %}
+<script>
+
+    var ctx = document.getElementById('overallchart4').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            // labels: ['a', 'b', 'c'],
+            datasets: [
+                {
+                    label: 'Revenue',
+                    data: {
+                        'Jan': 1,
+                        'Feb': 2,
+                        'March': 2,
+                        'April': 2,
+                        'May': 2,
+                        'June': 2,
+                        'July': 25,
+                    },
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(255, 159, 64, 0.5)'
+
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 7,
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 5,
+                    fill: true,
+                    borderWidth: 2,
+                },
+
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+  $("#verify").click(function (e) {
+    $(this).addClass('disabled')
+    $("#spinner").addClass("spinner-border spinner-border-sm");
+  });
+</script>
+{% endblock scripts %}

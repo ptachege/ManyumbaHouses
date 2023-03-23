@@ -1,0 +1,112 @@
+{% extends 'HouseListing/base.html' %}
+
+
+{% block headstyle %}
+
+<style>
+    .myiconsize{
+        font-size: 5rem!important;
+        color: black;
+    }
+    .owner-text{
+        font-weight: 800;
+    }
+    .icon-circle{
+
+        width: 7rem;
+        height: 7rem;
+        margin: auto;
+        background: white;
+        border-radius: 50%;
+        box-shadow: rgb(0 0 0 / 30%) 0px 2px 4px 0px;
+    }
+
+    .btn {
+        line-height: 14px!important;
+    }
+</style>
+    
+{% endblock headstyle %}
+    
+
+
+{% block body %}
+
+<div class="content-wrapper">
+    <section class="listing-wrap pt-4">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-12 text-center">
+                    <h3 style="color: #E646A6;">HELP US KNOW YOU BETTER</h3>               
+                    <h5>Please select a profile below that best describe you.</h5>
+
+                </div>
+            </div>
+
+            <div class="row my-4 mb-4 text-center">
+                <div class="col-12">
+                    <h6>30 days free Trial, no monthly fees, no setup fees, and no contract.</h6>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col-md-3 offset-md-3">
+                    <div class="property-card style3 bg-light">
+                        <div class="property-img text-center">
+                            <div class="icon-circle mb-2">
+                                <i class="flaticon-office-building myiconsize"></i>                            
+                            </div>
+                        </div>
+                        <div class="property-info text-center pt-2">
+                            <h5 class="owner-text">I'm a landlord/ <br> Property Manager</h5>
+                            <a href="{% url 'HouseListing:login_demo' %}" class="btn style2 btn-sm mt-3">
+                                View Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="col-md-3 mt-3 mt-md-0">
+                    <div class="property-card style3 bg-light">
+                        <div class="property-img text-center">
+                            <div class="icon-circle mb-2">
+                                <i class="flaticon-user-avatar myiconsize"></i>                            
+                            </div>
+                        </div>
+                        <div class="property-info text-center pt-2">
+                            <h5 class="owner-text">I'm a Tenant</h5>
+                            <a href="{% url 'HouseListing:login_tenant_demo' %}" class="btn style2 btn-sm mt-3">
+                                View Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col-12 text-center">
+                    <h3 style="color: #E646A6;">Have an account?</h3>
+
+                    <a href="" data-bs-toggle="modal"
+                    data-bs-target="#signIn" class="btn style2 btn-sm my-3">
+                        Login
+                    </a> 
+                    <br>
+                    or
+                    <br>
+                    <a href="" data-bs-toggle="modal"
+                    data-bs-target="#signUp" class="btn style3 btn-sm mt-3">
+                        Signup
+                    </a>
+
+                </div>
+            </div>
+
+            <hr>
+            <hr>
+        </div>
+    </section>
+</div>
+    
+{% endblock body %}
+    

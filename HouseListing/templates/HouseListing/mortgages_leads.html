@@ -1,0 +1,233 @@
+{% extends 'HouseListing/base.html' %} {% block headstyle %}
+{% load humanize %}
+
+
+{% endblock headstyle %} {% load static %} {% block body %}
+
+
+ <div class="page-wrapper">
+      <div class="content-wrapper">
+        <div class="breadcrumb-wrap bg-f br-2">
+          <div class="container">
+            <div class="breadcrumb-title">
+              <h2>Find My Eligibility</h2>
+              <ul class="breadcrumb-menu list-style">
+                <li><a href="/home">Home </a></li>
+                <li>Eligibility</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <section class="contact-us-wrap ptb-100">
+          <div class="container">
+       
+            <div class="row">
+              <div class="col-md-8 order-2 order-md-1 col-12 my-2">
+                <div class="contact-content">
+                  <div class="content-title style1">
+                    <!-- <span>Contact Us</span> -->
+                    <h2>Property Finance?</h2>
+                    <p>
+                     We offer tailor-made solutions for persons seeking to acquire, construct and finance property in major urban and rural areas within major towns in Kenya. These properties may be for owner-occupation or investment. Own your own home today 
+                     at 11.9% per annum on reducing balance, with the interest rate fixed for the first 3 years.
+                    </p>
+
+                    <h2>How it works</h2>
+                    <ul>
+                        <li class="my-3"> 
+                            Step 1. Fill in forms and submit requirements.
+                        </li>
+                        <li class="my-3"> 
+                           Step 2. Form received and processed by Manyumba Team
+                        </li>
+                        <li class="my-3">
+                            Step 3. Manyumba send offer Letter, Fulfill conditions on the offer letter from Manyumba
+                        </li>
+                        <li class="my-3">
+                            Step 4. Valuation of Property: Done by a Manyumba Approved valuer
+                        </li>
+                        <li class="my-3">
+                            Step 5. Security Perfection/ Conveyance: Transfer of title and or Legal Charge on the title - Done by a Manyumba approved lawyer
+                        </li>
+                        <li class="my-3">
+                            Step 6. Disbursement: Release of funds to the vendor/borrower’s account.
+                        </li>
+
+                    </ul>
+
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="col-md-4 order-1  order-md-2 col-12 mb-4">
+                <div class="contact-form" style="box-shadow: rgb(0 0 0 / 30%) 0px 2px 4px 0px;padding: 10px 30px 30px">
+                  <form class="form-wrap" id="contactForm" method="post" action="{% url 'HouseListing:create_morgage_lead' pk %}" >
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            name="Name"
+                            placeholder="Full Name*"
+                            id="name"
+                            required
+                            data-error="Please enter your Full Name"
+                          />
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            name="phone"
+                            placeholder="Phone*"
+                            id="Phone"
+                            required
+                            data-error="Please enter your Phone"
+                          />
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <input
+                            type="email"
+                            name="email"
+                            placeholder="Email*"
+                            id="email"
+                            required
+                            data-error="Please enter your Email"
+                          />
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="form-group">
+                         <select id="employment-type" placeholder="Employment Type" name="employment_type"  class="form-control">
+                            <option value="">
+                            Employment Type
+                            </option>
+                            <option value="Employed" >
+                            Employed
+                            </option>
+                            <option value="Self Employed">
+                            Self Employed
+                            </option>
+                            <option value="Not Employed">
+                            Not Employed
+                            </option>
+                        </select>
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-12">
+                        <div class="form-group">
+                            <select placeholder="Monthly Gross Income" name="monthly_gross_income" class="form-control">
+                                <option value="">
+                                Monthly Gross Income
+                                </option>
+                                <option value="0 - 50000">
+                                0 - 50000
+                                </option>
+                                <option value="50001 - 100000" >
+                                50001 - 100000
+                                </option>
+                                <option value="100001 - 200000">
+                                100001 - 200000
+                                </option>
+                                <option value="200001 - 250000">
+                                200001 - 250000
+                                </option>
+                                <option value="250000 &amp; above">
+                                250000 &amp; above
+                                </option>
+                            </select>
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-12">
+                        <div class="form-group">
+                            <select id="convenient-time-to-be-contacted" placeholder="Convenient Time to be Contacted" name="convenient_time_to_be_contacted" class="form-control">
+                                <option value="" >
+                                Convenient Time to be Contacted
+                                </option>
+                                <option value="0800Hrs">
+                                0800Hrs
+                                </option>
+                                <option value="0900Hrs">
+                                0900Hrs
+                                </option>
+                                <option value="1000Hrs">
+                                1000Hrs
+                                </option>
+                                <option value="1100Hrs">
+                                1100Hrs
+                                </option>
+                                <option value="1200Hrs">
+                                1200Hrs
+                                </option>
+                                <option value="1300Hrs">
+                                1300Hrs
+                                </option>
+                                <option value="1400Hrs">
+                                1400Hrs
+                                </option>
+                                <option value="1500Hrs">
+                                1500Hrs
+                                </option>
+                                <option value="1600Hrs">
+                                1600Hrs
+                                </option>
+                                <option value="1700Hrs">
+                                1700Hrs
+                                </option>
+                            </select>
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+
+                       <div class="col-md-12">
+                        <div class="form-group">
+                            
+                          <input
+                            type="number"
+                            name="property_price"
+                            placeholder="Property Price*"
+                            value="{{price}}"
+                            id="property-price"
+                            required
+                            data-error="Please enter your Property Price"
+                          />
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-12 text-center">
+                        <button type="submit" class="btn style2">
+                          Check Eligibility
+                        </button>
+                        <div id="msgSubmit" class="h6 text-center hidden"></div>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+   
+    </div>
+
+
+
+
+{% endblock body %}

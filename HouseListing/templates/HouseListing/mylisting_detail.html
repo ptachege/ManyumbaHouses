@@ -1,0 +1,811 @@
+{% extends 'HouseListing/default_listing_base.html' %}
+ {% load static %} {% load humanize %} {% block header %}
+
+<style>
+  @media (max-width: 768px) {
+    .user-img {
+      width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 30px;
+    }
+  }
+  .btn-sweet {
+    background: transparent;
+    border: none;
+  }
+  .btn-sweet:focus {
+    outline: none;
+  }
+
+  .panel-heading {
+    cursor: pointer;
+}
+
+.card-header .icon-arrow-down15 {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .icon-arrow-down15 {
+  transform: rotate(90deg);
+}
+</style>
+
+{% endblock header %} {% block body %}
+<div class="container-fluid my-4">
+  <div class="row">
+    <a
+      href="{% url 'HouseListing:my_listing' %}"
+      class="btn btn-outline-dark btn-sm ml-auto"
+      style="margin-right: 20px; margin-bottom: 10px; border-radius: 5px"
+    >
+      <i class="icon-arrow-left15 mr-1"></i>
+      Go Back
+    </a>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div
+          class="card-header header-elements-inline"
+          style="background-color: rgb(50, 65, 72); color: #fff"
+        >
+          <h3 class="card-title">
+            <i class="icon-office" style="font-size: 25px"></i>
+            &nbsp;{{property.property_title}}
+          </h3>
+          <div class="header-elements">
+            <div class="list-icons">
+              <a class="list-icons-item" data-action="reload"></a>
+              <a class="list-icons-item" data-action="remove"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        {% if property.publish and property.approved_by_admin == 1 %}
+
+        <span class="badge badge-success">
+            Active
+        </span>
+        
+        {% else %}
+
+        <span class="badge badge-warning">
+            <small>
+                Off-market
+            </small>
+        </span>
+            
+        {% endif %}        
+    </div>
+    <div class="col-6">
+        <div class="custom-control custom-switch mb-2 float-right">
+            <input onchange="togglePublish({{property.id}})" type="checkbox" class="custom-control-input" id="sc_ls_c{{property.id}}" 
+            {% if property.publish %}
+                checked                                                    
+            {% endif %}
+                >
+            <label class="custom-control-label" for="sc_ls_c{{property.id}}">
+                {% if property.publish %}
+                <small>Published</small>
+                {% else %}
+                <small>UnPublished</small>
+                {% endif %}
+            </label>
+        </div>
+    </div>
+</div>
+
+    <div class="row">   
+
+        <div class="col-md-12">
+        <div id="accordion">
+            <div class="card">
+            <div
+                class="card-header panel-heading d-flex align-items-center"
+                id="headingOne"
+                data-toggle="collapse"
+                data-target="#collapseOne"
+            >
+                <i class="icon-arrow-down15 icon-2x mr-4"></i> 
+                <h4 class="mb-0 font-weight-bold">
+                    Property Information
+                </h4>
+            </div>
+
+            <div
+                id="collapseOne"
+                class="collapse show"
+                aria-labelledby="headingOne"
+                data-parent="#accordion"
+            >
+                <div class="card-body">
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">City</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.city}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Street</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.street}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Property Title</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.property_title}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Description</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.description}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Type</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.type}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Status</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.status}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        
+                        {% if property.type.name == 'Land' %}
+
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Land Size</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.landsize}}</p>
+                        </div>
+                            
+                        {% else %}
+                        
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Area Size</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.area_size}} (sqft)</p>
+                        </div>
+                        {% endif %}
+                            
+                    </div>         
+                    
+                    {% if property.type.name != 'Land' and property.type.name != 'Office Space' %}
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Rooms</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.rooms}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Bedrooms</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.bedrooms}}</p>
+                        </div>
+                    </div>         
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Bathrooms</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.bathrooms}}</p>
+                        </div>
+                    </div>         
+                        
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Parking</h6>
+                        </div>
+                        <div class="col-6">
+                            <p>{{property.garages}}</p>
+                        </div>
+                    </div>         
+                        
+                    {% endif %}
+                        
+                </div>
+            </div>
+            </div>
+            <div class="card">
+            <div
+                class="card-header panel-heading d-flex align-items-center"
+                id="headingOne"
+                data-toggle="collapse"
+                data-target="#collapseTwo"
+            >
+                <i class="icon-arrow-down15 icon-2x mr-4"></i> 
+                <h4 class="mb-0 font-weight-bold">
+                    
+                    {% if property.type.name == 'Land' %}
+                        Price Details
+                    {% else %}
+                        Price details                    
+                    {% endif %}
+                        
+                </h4>
+            </div>
+
+            <div
+                id="collapseTwo"
+                class="collapse"
+                aria-labelledby="headingOne"
+                data-parent="#accordion"
+            >
+                <div class="card-body">
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">
+                                {% if property.type.name == 'Land' %}
+                                    Price
+                                {% else %}
+                                    Rent                    
+                                {% endif %}
+                            </h6>
+                        </div>
+                        <div class="col-6">
+                            <p>Ksh {{property.price|intcomma}}</p>
+                        </div>
+                    </div>     
+                    {% if property.type.name != 'Land' %}
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <h6 class="font-weight-bold">Deposit</h6>
+                            </div>
+                            <div class="col-6">
+                                <p>Ksh {{property.security_deposit|intcomma}}</p>
+                            </div>
+                        </div>   
+                    {% endif %}                              
+                </div>
+            </div>
+            </div>
+            <div class="card">
+            <div
+                class="card-header panel-heading d-flex align-items-center"
+                id="headingOne"
+                data-toggle="collapse"
+                data-target="#collapseThree"
+            >
+                <i class="icon-arrow-down15 icon-2x mr-4"></i> 
+                <h4 class="mb-0 font-weight-bold">
+                    Media                          
+                </h4>
+            </div>
+
+            <div
+                id="collapseThree"
+                class="collapse"
+                aria-labelledby="headingOne"
+                data-parent="#accordion"
+            >
+                <div class="card-body">
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-2 text-center mb-3">
+                            <img src="{{property.featured_image.url}}" class="img-fluid" alt="nothing" style="border-radius: 5px;">
+                        </div>
+                        
+                        {% for avatar in all_associated_avatars  %}
+                        <div class="col-sm-6 col-md-2 text-center mb-3">
+                            <img src="{{avatar.image.url}}" class="img-fluid" alt="nothing" style="border-radius: 5px;">
+                        </div>
+                        {% empty %}
+                        <!-- <div class="col-12">
+                            <div class="alert alert-warning text-center">
+                                No Media Gallery uploaded
+                            </div>
+                        </div> -->
+                        {% endfor %}
+                            
+                    </div>     
+                                            
+                </div>
+            </div>
+            </div>
+            <div class="card">
+            <div
+                class="card-header panel-heading d-flex align-items-center"
+                id="headingOne"
+                data-toggle="collapse"
+                data-target="#collapseFour"
+            >
+                <i class="icon-arrow-down15 icon-2x mr-4"></i> 
+                <h4 class="mb-0 font-weight-bold">
+                Amenities
+                </h4>
+            </div>
+
+            <div
+                id="collapseFour"
+                class="collapse"
+                aria-labelledby="headingOne"
+                data-parent="#accordion"
+            >
+                
+                {% if property.type.name != 'Land' %}
+
+                {% if property.type.name == 'Office Space' %}
+
+						<div class="card-body">
+							<hr>
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">BusinessLounge</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.BusinessLounge %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">Majortransportlinks</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.Majortransportlinks %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">WIFI</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.WFI %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">MeetingRooms</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.MeetingRooms %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">CCTV</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.CCTV %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">Parking</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.Parking %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6 text-center">
+									<h6 class="font-weight-bold">Elevator</h6>
+
+								</div>
+								<div class="col-6">
+									{% if property.Elevator %}
+									<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+									{% else %}
+									<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+
+						{% else %}
+                      <div class="card-body">
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Water</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Water %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Electricity</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Electricity %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">WIFI</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.WFI %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                                
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Ac</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Ac %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                                
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Gateman</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Gateman %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                                
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Parking</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Parking %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Swimming_Pool</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Swimming_Pool %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Balcony</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Balcony %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                                
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Gym</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Gym %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>   
+
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">Play_Area</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.Play_Area %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                                
+                        </div> 
+                    {% endif %}                   
+                {% else %}
+                  <div class="card-body">
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">ElectricSupply</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.ElectricSupply %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">WaterSupply</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.WaterSupply %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">RainWaterDrainage</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.RainWaterDrainage %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>     
+                                
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">DomesticSewage</h6>
+                                                    
+                        </div>
+                        <div class="col-6">
+                            {% if property.DomesticSewage %}
+                            <i class="icon-checkmark2"
+                                style="color:green; font-size: 25px;"></i>
+                            {% else %}
+                            <i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+                            {% endif %}                        
+                        </div>
+                    </div>         
+                </div>                    
+                {% endif %}
+                    
+              
+            </div>
+            </div>
+            <div class="card">
+            <div
+                class="card-header panel-heading d-flex align-items-center"
+                id="headingOne"
+                data-toggle="collapse"
+                data-target="#collapseFive"
+            >
+                <i class="icon-arrow-down15 icon-2x mr-4"></i> 
+                <h4 class="mb-0 font-weight-bold">
+                Final Details
+                </h4>
+            </div>
+
+            <div
+                id="collapseFive"
+                class="collapse"
+                aria-labelledby="headingOne"
+                data-parent="#accordion"
+            >
+                <div class="card-body">
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">
+                            Verification Status
+                            </h6>
+                        </div>
+                        <div class="col-6">
+                            {% if property.approved_by_admin == 1 %}
+
+                            <span class="badge badge-success">
+                                <small>
+                                    Approved
+                                </small>
+                            </span>
+                            
+                            {% else %}
+              
+                            {% if property.approved_by_admin == 2 %}
+                            <span class="badge badge-danger badge-striped"> 
+                                <small>
+                                    Rejected 
+                                </small>
+                            </span>
+                                
+                            {% else %}
+                            
+                            <span class="badge badge-warning badge-striped"> 
+                                <small>
+                                    Pending
+                                </small>
+                            </span>
+                            {% endif %}
+                                
+                            {% endif %}
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h6 class="font-weight-bold">
+                            Publish Status
+                            </h6>
+                        </div>
+                        <div class="col-6">
+                            {% if property.publish %}
+
+                            <span class="badge badge-info">
+                                Active
+                            </span>
+                            
+                            {% else %}
+
+                            <span class="badge badge-warning">
+                                <small>
+                                    Off-market
+                                </small>
+                            </span>
+                                
+                            {% endif %}
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            </div>
+        
+        </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% block scripts %}
+
+<script>
+    function togglePublish(id) {
+    var url = "{% url 'HouseListing:togglePublish' 123 %}";
+    // Construct the full URL with "id"
+    document.location.href = url.replace('123', id);                
+    }
+</script>
+<script>
+  var SweetAlert = (function () {
+    var _componentSweetAlert = function () {
+      if (typeof swal == "undefined") {
+        console.warn("Warning - sweet_alert.min.js is not loaded.");
+        return;
+      }
+      var swalInit = swal.mixin({
+        buttonsStyling: false,
+        confirmButtonClass: "btn btn-primary",
+        cancelButtonClass: "btn btn-light",
+      });
+      $("#sweet_warning").on("click", function () {
+        swalInit({
+          title: "You are about to terminate this Lease. Are you Sure?",
+          text: "Note that this action is critical!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, Proceed!",
+          position: "top",
+        });
+      });
+    };
+    return {
+      initComponents: function () {
+        _componentSweetAlert();
+      },
+    };
+  })();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    SweetAlert.initComponents();
+  });
+</script>
+
+{% endblock scripts %} {% endblock body %}

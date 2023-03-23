@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <br>
+
+    
+    
+    {% if username and password %}
+    <h2>Hello {{ first_name }}</h2>
+    <h3>You have been registered as a tenant in {{apartment}} House number {{house_code}}</h3>
+    <h3>Please use the information below to log into your account:</h3>
+
+    <p> <b>Username:</b>{{ username }} </br> </p>
+    <p> <b>Password:</b>{{ password }} </br></p>
+    
+    <p>
+        Please note that you can use this portal to perform rent payment, 
+        raise concerns and issues / complains. Follow the link <a href="http://manyumba.co/">https://manyumba.co</a> to get started.
+    </p>
+    {% else %}
+
+    <h3>Hello {{first_name}}. This is to notify you that {{apartment}} House number {{house_code}} has been registered under your account.</h3>
+    
+    {% endif %}
+        
+    
+    
+</body>
+
+</html>

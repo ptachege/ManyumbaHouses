@@ -1,0 +1,151 @@
+{% extends 'HouseListing/base.html' %} {% block headstyle %}
+{% load humanize %}
+
+
+{% endblock headstyle %} {% load static %} {% block body %}
+
+ <div class="content-wrapper">
+        <section class="listing-wrap pt-4">
+          <div class="container">
+            <div class="row gx-5">
+              <div class="col-md-8">
+                <div class="row align-items-center mb-25">
+                  <div class="col-md-8">
+                    <div class="profuct-result">
+                    <h6>Houses for Rent</h6>
+                      <p>{{count}} Result{% if count > 1 %}s
+                      {% endif %}
+                        Found  
+                        
+                      {% if result_header %}
+                        {{result_header}}                          
+                      {% endif %}
+                          
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="filter-item-cat">
+                      <select>
+                        <option value="2">Sort By High To Low</option>
+                        <option value="3">Sort By Low To High</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                {% for list in all_listings  %}
+                  <div class="col-lg-6 col-md-6">
+                      <a href="{% url 'HouseListing:listing_details' list.slug %}">
+                          <div class="property-card style3">
+                              <div class="property-img">
+                                  <img class="card-img-top" style="object-fit:cover;max-height:280px;min-height:280px;" src="{{list.featured_image.url}}" alt="Card image cap">
+
+                                  <span class="property-status">{{list.status}}</span>
+                              </div>
+                              <div class="property-info">
+                                  <div class="property-status-wrap">
+                                      <span class="property-state"><i class="flaticon-home"></i>{{list.type.name}}</span>
+                                      <p class="property-price">KES {{list.price|intcomma}} 
+                                        {% if list.type.name != 'Land' and list.status.property_status != 'For Sale' %}  
+                                          /<span>month</span>
+                                        {% endif %}
+                                      </p>
+                                  </div>
+                                  <h3>
+                                      {{list.property_title}}
+                                  </h3>
+                                  <p>
+                                      <i class="flaticon-location"></i>{{list.street}}
+                                  </p>
+                                  <ul class="property-metainfo list-style">
+                                      
+                                      {% if list.type.name != 'Land' and list.type.name != 'Office Space' %}                                      
+                                      <li><i class="flaticon-double-bed"></i>{{list.bedrooms}}</li>
+                                      <li><i class="flaticon-bath-tub"></i>{{list.bathrooms}}</li>
+                                      {% endif %}
+                                        
+                                      <li><i class="flaticon-square"></i>{{list.area_size}} sqft</li>
+                                  </ul>
+                              </div>
+                          </div>
+                        </a>
+                  </div>
+
+                {% empty %}
+
+                <div class="alert alert-info text-warning text-center">
+                    <h6>
+                        No properties Found. Check out later.
+                    </h6>
+
+                    <a href="{% url 'HouseListing:home' %}" class="btn style2 btn-sm">Continue Browsing</a>
+                </div>
+                  
+                {% endfor %}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="sidebar sticky">
+                  <div class="sidebar-widget">
+                    <h4>Filter</h4>
+                    <form action="#" class="filter-widget">
+                      <div class="form-group">
+                        <label for="price-range">Property Price</label>
+                        <div
+                          id="slider-range"
+                          class="price-range mar-bot-20"
+                        ></div>
+                        <input type="text" id="amount_one" />
+                      </div>                   
+                      <div class="form-group">
+                        <select name="category" id="category">
+                          <option data-show="Filter By Category" value="0">
+                            Filter By Category
+                          </option>
+                          <option value="Apartment">Apartment</option>
+                          <option value="Villa">Villa</option>
+                          <option value="Condo">Condo</option>
+                        </select>
+                      </div>
+                  
+                      <div class="form-group">
+                        <select name="city" id="city">
+                          <option data-show="Filter By City" value="0">
+                            Filter By City
+                          </option>
+                          <option value="1">Syokimau</option>
+                          <option value="2">Kitengela</option>
+                          <option value="3">Rongai</option>
+                          <option value="3">Kilimani</option>
+                          <option value="3">Thika Rd</option>
+                          <option value="3">Embakasi</option>
+                          <option value="3">Waiyaki Way</option>
+                          <option value="3">Kiambu Rd</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <input type="text" placeholder="Bathrooms">
+                        </div>
+                      <div class="form-group">
+                        <input type="text" placeholder="Bedrooms">
+                        </div>
+                           
+                      <div class="form-group">
+                        <button class="btn style2 d-block w-100">
+                           <i class="flaticon-search me-3"></i> Search
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+
+{% endblock body %}

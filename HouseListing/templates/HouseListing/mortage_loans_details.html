@@ -1,0 +1,393 @@
+{% extends 'HouseListing/base.html' %}
+
+
+{% block headstyle %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+    integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<style>
+    .myiconsize {
+        font-size: 5rem !important;
+        color: black;
+    }
+
+    .owner-text {
+        font-weight: 800;
+    }
+
+    .icon-circle {
+
+        width: 7rem;
+        height: 7rem;
+        margin: auto;
+        background: white;
+        border-radius: 50%;
+        box-shadow: rgb(0 0 0 / 30%) 0px 2px 4px 0px;
+    }
+
+    .btn {
+        line-height: 14px !important;
+    }
+
+    .stats_text{
+        font-weight: 700;
+        color: black;
+    }
+</style>
+
+{% endblock headstyle %}
+
+
+
+{% block body %}
+
+<div class="content-wrapper">
+    <section class="listing-wrap pt-4">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-12">
+                    <h2 style="color: #052286;">Mortgage Calculator.</h2>
+                    <p>
+                        Estimate your payment with our easy-to-use loan calculator. Then get pre-qualified to buy by a local lender.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 my-4 text-center">
+                    <h5 class="text-muted">
+                    Calculate your monthly mortgage payments
+                    </h5>
+                </div>             
+            </div>
+
+            <div class="row my-4">
+               
+                <div class="col-md-5">
+                    <div class="breakup">
+                        <canvas id="pieChart" height="100px"></canvas>
+                    </div>
+                </div>
+            
+                <div class="col-md-7">
+                    <div class="details">
+                        <div>
+                            <div class="detail">
+                                <p style="color: #333;font-weight: 900;">Amount</p>
+                                <p id="loan-amt-text" style="color: black"></p>
+                            </div>
+                            <input type="range" id="loan-amount" value="{{property.price}}" min="0" max="30000000" step="1000" />
+                        </div>
+                        <div>
+                            <div class="detail">
+                                <p style="color: #333; font-weight: 900;">Duration</p>
+                                <p id="loan-period-text" style="color: black"></p>
+                            </div>
+                            <input type="range" id="loan-period" min="1" max="30" step="1" />
+                        </div>
+            
+                        <div class="footer">
+                            <p id="price-container"><span id="price"><b> 0 </b></span> /mo</p>
+                        </div>
+
+                        <div class="row mb-4 mt-3">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="stats_text">Principal</p>
+                                        <p id="cp" style="color: black; font-size: 17px"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="stats_text">Interest</p>
+                                        <p id="ci" style="color: black; font-size: 17px"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p class="stats_text">Total Payable</p>
+                                        <p id="ct" style="color: black; font-size: 17px"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+
+            <!-- <div class="row my-4">
+                <div class="col-12">
+                    <h5 class="text-muted">
+                        What type of mortgage is right for me?
+                    </h5>
+
+                    <p>
+                        The type of loan you choose will affect your interest rate and your monthly payment, so it’s important to choose wisely.
+                        Here’s a look at different loan options for some common mortgage types. The interest rates displayed are averages, but
+                        you can find personalized rates here.
+                    </p>
+                </div>
+
+                <div class="col-12 mt-4 pt-4">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <th width="0.2" class="Table__TableHeadCell-latbb5-1 fSMDJQ"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Loan type</span></th>
+                                    <th width="0.25" class="Table__TableHeadCell-latbb5-1 eYVelx"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Best for</span></th>
+                                    <th width="0.125" class="Table__TableHeadCell-latbb5-1 fvmVzO"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Current avg. APR</span></th>
+                                    <th width="0.125" class="Table__TableHeadCell-latbb5-1 fvmVzO"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Min. down payment*</span></th>
+                                    <th width="0.3" class="Table__TableHeadCell-latbb5-1 cbA-dtR"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">More details</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Low monthly payments that won’t change</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">7.15%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">30-year fixed is the most common mortgage type</span>
+                                    </td>
+                                </tr>
+                           
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">15-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Paying loan off faster (vs 30-year loans)</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.36%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Payments are higher, but much less interest is paid over
+                                            time vs 30-yr loans</span></td>
+                                </tr>
+                            
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">7/1 ARM</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those who might sell within 7 years</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.26%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">After 7 years, interest rate &amp; mo. payment can change
+                                            annually</span></td>
+                                </tr>
+                            
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">5/1 ARM</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those who might sell within 5 years</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.12%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">After 5 years, interest rate &amp; mo. payment can change
+                                            annually</span></td>
+                                </tr>
+                            
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">FHA 30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those with lower credit scores</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">7.33%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.5%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Mortgage insurance is required (upfront fee &amp; mo.
+                                            insurance premium)</span></td>
+                                </tr>
+                           
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">VA 30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Qualifying veterans and active military</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.69%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">0.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">PMI is not required for VA loans, but there may be a VA
+                                            funding fee</span></td>
+                                </tr>
+                            
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">Jumbo 30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those purchasing high-priced homes</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">0.00%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Varies</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Jumbo loans are for loan amounts that exceed conventional
+                                            loan limits</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+             -->
+            
+
+
+
+
+        </div>
+    </section>
+</div>
+
+
+<script>
+    var P, R, N, pie, line;
+    var loan_amt_slider = document.getElementById("loan-amount");
+    var loan_period_slider = document.getElementById("loan-period");
+
+    // update loan amount
+    loan_amt_slider.addEventListener("input", (self) => {
+        document.querySelector("#loan-amt-text").innerText =
+            "Ksh " + parseInt(self.target.value).toLocaleString("en-US");
+        P = parseFloat(self.target.value);
+        displayDetails();
+    });
+
+
+    R = 11
+
+    // update loan period
+    loan_period_slider.addEventListener("input", (self) => {
+        document.querySelector("#loan-period-text").innerText =
+            self.target.value + " years";
+        N = parseFloat(self.target.value);
+        displayDetails();
+    });
+
+    // calculate total Interest payable
+    function calculateLoanDetails(p, r, emi) {
+        /*
+            p: principal
+            r: rate of interest
+            emi: monthly emi
+        */
+        let totalInterest = 0;
+        let yearlyInterest = [];
+        let yearPrincipal = [];
+        let years = [];
+        let year = 1;
+        let [counter, principal, interes] = [0, 0, 0];
+        while (p > 0) {
+            let interest = parseFloat(p) * parseFloat(r);
+            p = parseFloat(p) - (parseFloat(emi) - interest);
+            totalInterest += interest;
+            principal += parseFloat(emi) - interest;
+            interes += interest;
+            if (++counter == 12) {
+                years.push(year++);
+                yearlyInterest.push(parseInt(interes));
+                yearPrincipal.push(parseInt(principal));
+                counter = 0;
+            }
+        }
+        return totalInterest;
+    }
+
+    // calculate details
+    function displayDetails() {
+        let r = parseFloat(R) / 1200;
+        let n = parseFloat(N) * 12;
+
+        let num = parseFloat(P) * r * Math.pow(1 + r, n);
+        let denom = Math.pow(1 + r, n) - 1;
+        let emi = parseFloat(num) / parseFloat(denom);
+
+        let payabaleInterest = calculateLoanDetails(P, r, emi);
+
+        let opts = '{style: "decimal", currency: "US"}';
+
+        document.querySelector("#cp").innerText =
+            "Ksh " + parseFloat(P).toLocaleString("en-US", opts);
+
+        document.querySelector("#ci").innerText =
+            "Ksh " + parseFloat(payabaleInterest).toLocaleString("en-US", opts);
+
+        document.querySelector("#ct").innerText =
+            "Ksh " + parseFloat(parseFloat(P) + parseFloat(payabaleInterest)).toLocaleString(
+                "en-US",
+                opts
+            );
+
+        document.querySelector("#price").innerText =
+            "Ksh " + parseFloat(emi).toLocaleString("en-US", opts);
+
+        pie.data.datasets[0].data[0] = P;
+        pie.data.datasets[0].data[1] = payabaleInterest;
+        pie.update();
+    }
+
+    // Initialize everything
+    function initialize() {
+        document.querySelector("#loan-amt-text").innerText =
+            "Ksh " + parseInt(loan_amt_slider.value).toLocaleString("en-US");
+        P = parseFloat(document.getElementById("loan-amount").value);
+
+        document.querySelector("#loan-period-text").innerText =
+            loan_period_slider.value + " years";
+        N = parseFloat(document.getElementById("loan-period").value);
+
+        pie = new Chart(document.getElementById("pieChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Principal", "Interest"],
+                datasets: [
+                    {
+                        label: "Home Loan Details",
+                        data: [0, 0],
+                        backgroundColor: ["rgb(0,0,0)", "rgb(236,51,35)"],
+                        hoverOffset: 4,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Payment Breakup",
+                    },
+                },
+            },
+        });
+        displayDetails();
+    }
+    initialize();
+</script>
+
+{% endblock body %}

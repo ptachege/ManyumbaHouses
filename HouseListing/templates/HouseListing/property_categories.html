@@ -1,0 +1,146 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header%}
+
+{% endblock header %} {% block body %}
+
+<div class="row">
+    <div class="col-12">
+        <a href="" data-toggle="modal" data-target="#showModal" class="float-right btn btn-outline-dark btn-sm mb-3"><i class="icon-add"></i> Add Category</a>
+    </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">
+          <i class="icon-cog mr-4"></i> Property Categories
+        </h5>
+      </div>
+      <div class="table-responsive">
+          <table
+        class="table datatable-responsive-row-control table-striped table-hover"
+      >
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Category Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for category in categories %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{category.property_status}}</td>
+            <td>{{category.description}}</td>
+            <td>
+                <div class="dropdown d-inline-block">
+                <button
+                    class="btn btn-soft-primary btn-sm dropdown dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    <i class="icon-eye align-middle"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                    <a
+                        class="dropdown-item edit-item-btn"
+                        data-toggle="modal"
+                        data-target="#editmodal{{category.id}}"
+                        ><i
+                        class="icon-pencil3 me-2 text-muted"
+                        ></i>
+                        Edit</a
+                    >
+                    </li>
+                    <li>
+                    <a
+                        class="dropdown-item remove-item-btn"
+                        href="{% url 'HouseListing:delete_property_category' category.id %}"
+                    >
+                        <i
+                        class="icon-bin align-bottom me-2 text-muted"
+                        ></i>
+                        Delete
+                    </a>
+                    </li>
+                </ul>
+                </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6">
+              <div class="alert alert-warning text-center">
+                <i class="icon-warning" style="margin-right: 10px"></i> You
+                don't have any registered listings.
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="showModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Add Property Label</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form action="{% url 'HouseListing:property_categories' %}" method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Name</label>
+            <input
+              type="text"
+              id="customername-field"
+              class="form-control"
+              name="property_status"
+              placeholder="For Rent"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label"
+              >Description</label
+            >
+            <input
+              type="text"
+              id="customername-field"
+              class="form-control"
+              name="description"
+              placeholder="Short Description"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" id="add-btn">
+              Add
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

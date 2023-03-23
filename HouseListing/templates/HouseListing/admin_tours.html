@@ -1,0 +1,195 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header%} 
+<style>
+    a {
+        color: inherit;
+    }
+    .card-animate {
+            -webkit-transition: all .4s;
+            transition: all .4s;
+        }
+
+        .card-animate:hover {
+        -webkit-transform: translateY(calc(-1.5rem / 5));
+        transform: translateY(calc(-1.5rem / 5));
+        -webkit-box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        }
+</style>
+{% endblock header %} 
+{% block body %}
+<div class="row">
+  <div class="col-lg-12">
+    	<div class="card my-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <a href="{% url 'HouseListing:download_admin_tours_excel' %}" class="btn btn-outline-dark">Download Excel</a>
+                    </div>
+                </div>
+                <ul class="nav nav-tabs nav-tabs-bottom border-bottom-0 nav-justified" id="myTab">
+                    <li class="nav-item"><a href="#bottom-justified-divided-tab1" class="nav-link active" data-toggle="tab"><i class="icon-hour-glass mr-2"></i> Pending</a></li>
+                    <li class="nav-item"><a href="#bottom-justified-divided-tab2" class="nav-link" data-toggle="tab"> <i class="icon-history mr-2"></i> History</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="bottom-justified-divided-tab1">
+                        <div class="row">
+                            
+                            {% for tour in pending_tours  %}
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card single-cards">
+                                    <div class="card-body text-center">
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <i class="mi-person-outline mi-3x  text-muted border-muted border-3 rounded-pill p-3 mb-1 mt-1"></i>
+                                                <h5 class="text-danger">
+                                                    {{tour.full_name}}
+                                                </h5>
+                                                <h6>
+                                                    <i class="icon-phone text-muted mr-1"></i> 
+                                                    <a class="btn-link" href="tel:{{tour.phone}}">{{tour.phone}}</a>
+                                                </h6>
+                                                <h6>
+                                                    <i class="icon-calendar text-muted mr-1"></i> {{tour.tour_date}} 
+                                                </h6>
+                                                <h6>
+                                                    <blockquote>
+                                                        <small>
+                                                        {{tour.message}}
+
+                                                        </small>
+                                                    </blockquote>
+                                                    
+                                                </h6>                                               
+                                            </div>
+
+                                            <div class="col-6 text-center">
+                                                
+                                                <a href="{% url 'HouseListing:mark_tour_as_spam' tour.id %}" class="btn btn-danger btn-sm rounded-round ">
+                                                    <i class="icon-bin"></i> Spam
+                                                </a>                                               
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                
+                                                    <a href="{% url 'HouseListing:mark_tour_as_complete' tour.id %}" class="btn btn-success btn-sm rounded-round ">
+                                                        <i class="icon-check"></i> Complete
+                                                    </a>
+                                               
+                                            </div>
+                                        </div>                                                                                                        
+                                    </div>
+                                </div>
+                                                     
+                            </div>
+
+                            {% empty %}
+                                <div class="col-12">
+                                    <div class="alert alert-warning text-center">
+                                        <p><i class="icon-warning mr-2"></i> No Scheduled Tours at the moment.</p>
+                                    </div>
+                                </div>                               
+                            {% endfor %}
+                                
+                        </div>                  
+    
+                    </div>
+
+                    <div class="tab-pane fade" id="bottom-justified-divided-tab2">
+                         <div class="row">
+                            
+                            {% for tour in history_tours  %}
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card single-cards">
+                                    <div class="card-body text-center">
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <i class="mi-person-outline mi-3x  text-muted border-muted border-3 rounded-pill p-3 mb-1 mt-1"></i>
+                                                <h5 class="text-danger">
+                                                    {{tour.full_name}}
+                                                </h5>
+                                                <h6>
+                                                    <i class="icon-phone text-muted mr-1"></i> 
+                                                    <a class="btn-link" href="tel:{{tour.phone}}">{{tour.phone}}</a>
+                                                </h6>
+                                                <h6>
+                                                    <i class="icon-calendar text-muted mr-1"></i> {{tour.tour_date}} 
+                                                </h6>
+                                                <h6>
+                                                    <blockquote>
+                                                        {{tour.message}}
+                                                    </blockquote>
+                                                    
+                                                </h6>                                               
+                                                <h6>                                                   
+                                                   {% if tour.mark_as_span %}
+                                                    <span class="badge badge-warning">
+                                                        <i class="icon-warning mr-1"></i> Spam
+                                                    </span>                                                    
+                                                    {% else %}                                                    
+                                                    <span class="badge badge-success">
+                                                        <i class="icon-check mr-1"></i> Completed
+                                                    </span>                                                    
+                                                   {% endif %}
+                                                    
+                                                </h6>                                               
+                                            </div>
+
+                                            .
+                                        </div>                                                                                                        
+                                </div>
+                                                     
+                            </div>
+                            </div>
+                       
+                            {% empty %}
+                                <div class="col-12">
+                                    <div class="alert alert-warning text-center">
+                                        <p><i class="icon-warning mr-2"></i> No active Listings at the moment.</p>
+                                    </div>
+                                </div>                               
+                            {% endfor %}
+                                
+                        </div>                              
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(() => {
+        let url = location.href.replace(/\/$/, "");
+        
+        if (location.hash) {
+            const hash = url.split("#");
+            $('#myTab a[href="#'+hash[1]+'"]').tab("show");
+            url = location.href.replace(/\/#/, "#");
+            history.replaceState(null, null, url);
+            setTimeout(() => {
+            $(window).scrollTop(0);
+            }, 400);
+        } 
+        
+        $('a[data-toggle="tab"]').on("click", function() {
+            let newUrl;
+            const hash = $(this).attr("href");
+            if(hash == "#home") {
+            newUrl = url.split("#")[0];
+            } else {
+            newUrl = url.split("#")[0] + hash;
+            }
+            newUrl += "/";
+            history.replaceState(null, null, newUrl);
+        });
+        });
+    function togglePublish(id) {
+        var url = "{% url 'HouseListing:togglePublish' 123 %}";
+        // Construct the full URL with "id"
+        document.location.href = url.replace('123', id);                
+    }
+</script>
+
+{% endblock body %}

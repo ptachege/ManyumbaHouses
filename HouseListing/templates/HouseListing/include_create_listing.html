@@ -1,0 +1,818 @@
+<div class="container-fluid">
+    <div class="card my-4">
+        <div class="card-header bg-white header-elements-inline">
+            <h4 class="card-title text-center"> <i class="icon-user-plus"></i> Register Listing</h4>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <form class="wizard-form steps-validation"
+        
+        {% if side == 'listing_side' %}
+            
+            action="{% url 'HouseListing:create_listing_listing' %}"
+
+        {% else %}
+
+            action="{% url 'HouseListing:create_listing' %}"            
+
+        {% endif %}
+            
+         method="POST" enctype="multipart/form-data" id="myform" data-fouc>
+            {% csrf_token %}
+
+            
+            <h6>Location</h6>
+            <fieldset>  
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <h6>Please tell us where your Property is located.</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>City:<span class="text-danger">*</span></label>
+                            {{form.city}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Describe The Location: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="street"  required placeholder="e.g. Grey building opposite famous MUGUMO Tree" name="street">                        </div>
+                    </div>
+                </div>  
+            </fieldset>
+
+            <h6>Property Info </h6>
+            <fieldset>  
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <h6>Confirm some facts about your rental property.</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Property Title: <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" id="property_title" placeholder="property title" name="property_title">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description <span class="text-danger">*</span>
+                                
+                            </label>
+                        <textarea name="description" placeholder="Write several sentences describing the upgrades and desirable features that will attract people to your property"  class="form-control" id="description" cols="30" rows="3"></textarea></div>
+
+                    </div>
+                </div>               
+
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Type: <span class="text-danger">*</span></label>
+                            {{form.type}}
+                            <input type="hidden" name="land_id" id="land_id" value="{{land_id}}">
+                            <input type="hidden" name="office_id" id="office_id" value="{{office_id}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Status: <span class="text-danger">*</span></label>
+                            {{form.status}}
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Publish:</label>
+                             <select  name="publish" required data-placeholder="Publish?" class="form-control custom-select">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>     
+                            </select>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="row" id="generic_fields">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div id="area-size">
+                                <label>Area Size(sqft):</label>
+                                <input type="number" value="0"  class="form-control" id="area_size" placeholder="optional" name="area_size">                        </div>
+
+                            </div>
+                            <div id="land-size" style="display: none;">
+                                <label>Land Size(acres):</label>
+                                {{form.landsize}}
+                            </div>
+                    </div>
+
+                    <div class="col-md-6" {% if side == 'management_side' %} id="price_block" {% endif %}>
+                        <div class="form-group" id="price_inner_block">
+                            <label>Price/Rent: <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Ksh</span>
+                                </span>
+                                <input type="number" required class="form-control"  id="price" placeholder="property price" name="price">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="house_fields">
+                    <div class="row" >
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <h6>Please tell us the number of rooms in this properties.</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Rooms: <span class="text-danger">*</span></label>
+                                <input type="number"  value="0" class="form-control" required  placeholder="Number of Rooms" name="rooms">                        </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Bedrooms:</label>
+                                <input type="number" value="0" class="form-control"  placeholder="Number of bedrooms" name="bedrooms">                        </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Bathrooms:</label>
+                                <input type="number" value="0" class="form-control" id="bathrooms" placeholder="Number of bathrooms" name="bathrooms">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Parking:</label>
+                                <input type="number" value="0" class="form-control" id="garages" placeholder="Parking Spots" name="garages">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <h6>How much is the security deposit?</h6>
+                            </div>
+                        </div>   
+                         <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="text-muted">Amount generally should not exceed 150% of the base rent:</label>
+                                <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Ksh</span>
+                                </span>
+                                <input type="number" class="form-control" id="deposit" placeholder="Property deposit" name="deposit">
+                            </div>
+                            </div>
+                        </div>                     
+                    </div> -->
+                </div>
+            </fieldset>
+
+             <h6>Media & Gallary</h6>
+            <fieldset>
+               <div class="row mt-2">
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <h6>Add photos. Photos help Renters/Buyers imagine the property</h6>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title">
+                                Main Display Image 
+                            </h6>
+                        </div>
+
+                            <div class="card-body">                                                    
+                                    <p class="text-muted">Use this section to upload Main Display Image(Featured Image) Of property</p>
+                                        <div class="form-group">
+                                    <input type="file" data-show-caption="false" data-show-upload="false" class="file-input-extensions" required name="featured_image" data-fouc>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title">
+                                <span  id="other_image_href">Living Room <i class="icon-chevron-down float-right"></i></span>
+                            </h6>
+                        </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">                                                    
+                                                <p class="text-muted">Use this section to upload other sections of the property</p>
+                                                    <div class="form-group">
+                                                        <input type="file" data-show-caption="false" data-show-upload="false" class="file-input-extensions" multiple="multiple" name="living_room_media" required data-fouc>
+                                                        <span class="form-text text-muted">Click on the browse button to select images to upload.</span>
+                                            
+                                                <!-- end card -->
+                                            </div> <!-- end col -->
+                                        </div>
+                                    </div>
+                        </div>
+                    </div>
+
+                    <div id="accordion-default">
+								
+                               
+
+                                <div id="media-section">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="card-title">
+                                                <a class="collapsed text-body" data-toggle="collapse" href="#accordion-item-default3">Bedrooms <i class="icon-chevron-down float-right"></i></a>
+                                            </h6>
+                                        </div>
+
+                                        <div id="accordion-item-default3" class="collapse" data-parent="#accordion-default">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <input type="file" data-show-caption="false" data-show-upload="false" class="file-input-extensions" multiple="multiple" name="bedroom_media" data-fouc>
+                                                        <span class="form-text text-muted">Click on the browse button to select images to upload.</span>
+                                                    </div> <!-- end col -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="card-title">
+                                                <a class="collapsed text-body" data-toggle="collapse" href="#accordion-item-default4">Bathroom <i class="icon-chevron-down float-right"></i></a>
+                                            </h6>
+                                        </div>
+
+                                        <div id="accordion-item-default4" class="collapse" data-parent="#accordion-default">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <input type="file" data-show-caption="false" data-show-upload="false" class="file-input-extensions" multiple="multiple" name="bathroom_media" data-fouc>
+                                                        <span class="form-text text-muted">Click on the browse button to select images to upload.</span>
+                                                    </div> <!-- end col -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+                </div>
+                        
+
+                        </div>               
+            </fieldset>
+
+           
+            <h6>Amenities & Features</h6>
+            <fieldset>
+                <div id="house-amenity-section">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <h6>Which amaenitites does your property have? Click which Amenities are available at your property.</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Water" class="form-check-input">
+                                        Water
+                                    </label>
+                                </div>
+                                
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Electricity" class="form-check-input">
+                                        Electricity
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="WIFI" class="form-check-input">
+                                        WIFI
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Ac" class="form-check-input">
+                                        Ac
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Gateman" class="form-check-input">
+                                        Gateman
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Parking" class="form-check-input">
+                                        Parking
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Swimming_Pool" class="form-check-input">
+                                        Swimming Pool
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Balcony" class="form-check-input">
+                                        Balcony
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Gym" class="form-check-input">
+                                        Gym
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Play_Area" class="form-check-input">
+                                        Play Area
+                                    </label>
+                                </div>
+
+                                
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Internet" class="form-check-input">
+                                        Internet
+                                    </label>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div> 
+                </div>  
+                
+                 <div id="land-amenity-section" >
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <h6>Which amaenitites does your property have? Click which Amenities are available at your property.</h6>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="ElectricSupply" class="form-check-input">
+                                        ElectricSupply
+                                    </label>
+                                </div>
+                                
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="WaterSupply" class="form-check-input">
+                                        WaterSupply
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="RainWaterDrainage" class="form-check-input">
+                                        RainWaterDrainage
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="DomesticSewage" class="form-check-input">
+                                        DomesticSewage
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div id="office-amenity-section" style="display: none;">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <h6>Which amaenitites does your property have? Click which Amenities are available at your property.</h6>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="BusinessLounge" class="form-check-input">
+                                        Business Lounge
+                                    </label>
+                                </div>
+                                
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Majortransportlinks" class="form-check-input">
+                                        Major transport links
+
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="MeetingRooms" class="form-check-input">
+                                        Meeting Rooms
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="WFI" class="form-check-input">
+                                        Highspeedinternet
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="CCTV" class="form-check-input">
+                                        24 hour CCTV monitoring
+
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Elevator" class="form-check-input">
+                                        Elevator
+
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="Parking" class="form-check-input">
+                                        Parking
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+               
+            </fieldset>
+
+            {% if side == 'management_side' %}
+
+            <h6>Rooms & Units</h6>
+                <fieldset>
+
+                    <div id="if_for_rent" style="display: none;">
+
+                        <div class="alert alert-info text-center">
+                            This property will bemanaged by Manyumba. Proceed to Finalize.
+                        </div>
+
+                        <!-- <label class="form-check-label">
+                            <input type="checkbox" onchange="return thiswillwork()" id="managebymanyumba"
+                                name="is_managedbymanyumba" class="form-input-styled disabled" data-fouc>
+                            Yes
+                        </label> -->
+
+                        <div class="row" id="managebymanyumbadiv" style="display: none; margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label>Please select the type of houses available in this property. <span
+                                        class="text-danger">* Chose at least one category.</span></label>
+                                <div class="form-check mb-4">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" onchange="return showsingle()" id="single_checkbox" name=""
+                                            class="form-input-styled" data-fouc>
+                                        Single
+                                    </label>
+                                    <div id="singleDiv" style="display: none; margin-top: 10px;">
+                                        <label>Number of units <span class="text-danger">*</span></label>
+                                        <input type="number" value="0" name="single" placeholder="Units"
+                                            class="form-control ">
+                                        <label style=" margin-top: 10px;">Rent <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">Ksh.</span>
+                                            </span>
+                                            <input type="text" name="single_rent" id="single_rent" value="0"
+                                                class="form-control" placeholder="Agency Comission">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" id="bedsitter_checkbox" name=""
+                                            onchange="return showbed_sitters()" class="form-input-styled" data-fouc>
+                                        BedSitter
+                                    </label>
+                                    <div id="bed_sitters_div" style="display: none; margin-top: 10px;">
+                                        <label>Number of units <span class="text-danger">*</span></label>
+                                        <input type="number" value="0" name="bed_sitters" placeholder="Units"
+                                            class="form-control ">
+
+                                        <label style=" margin-top: 10px;">Rent <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">Ksh.</span>
+                                            </span>
+                                            <input type="text" name="bed_sitters_rent" id="bed_sitters_rent" value="0"
+                                                class="form-control" placeholder="Agency Comission">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-check mb-4">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" id="onebedroom_checkbox" onchange="return showone_bedroom()"
+                                            name="" class="form-input-styled" data-fouc>
+                                        One Bedroom
+                                    </label>
+                                    <div id="onebedroom_div" style="display: none; margin-top: 10px;">
+                                        <label>Number of units <span class="text-danger">*</span></label>
+                                        <input type="number" value="0" name="One_Bedroom" placeholder="Units"
+                                            class="form-control ">
+                                        <label style=" margin-top: 10px;">Rent <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">Ksh.</span>
+                                            </span>
+                                            <input type="text" name="One_Bedroom_rent" id="One_Bedroom_rent" value="0"
+                                                class="form-control" placeholder="Agency Comission">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" id="twobedroom_checkbox" onchange="return showtwo_bedroom()"
+                                            name="" class="form-input-styled" data-fouc>
+                                        Two Bedroom
+                                    </label>
+                                    <div id="twobedroom_div" style="display: none; margin-top: 10px;">
+                                        <label>Number of units <span class="text-danger">*</span></label>
+                                        <input type="number" value="0" name="Two_Bedroom" placeholder="Units"
+                                            class="form-control ">
+                                        <label style=" margin-top: 10px;">Rent <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">Ksh.</span>
+                                            </span>
+                                            <input type="text" name="Two_Bedroom_rent" id="Two_Bedroom_rent" value="0"
+                                                class="form-control" placeholder="Agency Comission">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" id="threebedroom_checkbox"
+                                            onchange="return showthree_bedroom()" name="" class="form-input-styled"
+                                            data-fouc>
+                                        Three Bedroom
+                                    </label>
+                                    <div id="threebedroom_div" style="display: none; margin-top: 10px;">
+                                        <label>Number of units <span class="text-danger">*</span></label>
+                                        <input type="number" value="0" name="Three_Bedroom" placeholder="Units"
+                                            class="form-control ">
+                                        <label style=" margin-top: 10px;">Rent <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">Ksh.</span>
+                                            </span>
+                                            <input type="text" name="Three_Bedroom_rent" id="Three_Bedroom_rent" value="0"
+                                                class="form-control" placeholder="Agency Comission">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check">
+
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="auto_house_id" checked class="form-input-styled"
+                                            data-fouc>
+                                        Auto Id.
+                                    </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div id="if_not_for_rent" style="display: none;">
+                        <div class="alert alert-info text-center">
+                            This section is hidden for non-rental properties. Go ahead and finalize the registration.
+                        </div>
+                    </div>
+                </fieldset>
+
+                <input type="hidden" name="" id="for_rent" value="{{for_rent}}">
+                <input type="hidden" name="" id="apartment_id" value="{{apartment_id}}">
+            {% endif %}
+
+            
+            <h6>Final Details</h6>
+            <fieldset>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            {% if side == 'listing_side' %}
+                                <h6>Do you want to publish this property?</h6>
+                                <p>If you chose No, the listing will be stored in our database but won't be displayed to buyers/renters. <b>You can always change preferences later.</b></p>
+                            {% else %}
+                                <h6>Do you want to List this property?</h6>
+                                <p>If you chose Yes, The listing will be dispalyed to buyers/renters but you'll be able to manage your listing too. <b>You can always change preferences later.</b></p>
+
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-4">
+                        <select name="publish" required data-placeholder="Publish?" class="form-control custom-select">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>     
+                        </select>
+                    </div>
+                </div>
+
+
+            </fieldset>
+            
+           
+
+        </form>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+         document.getElementById("id_status").onchange = function () {
+            console.log('status chnage');
+            let status = $("#id_status").val();
+
+
+            let for_rent_id_from_db = $("#for_rent").val();
+
+
+            let if_for_rent = $('#if_for_rent')
+            let if_not_for_rent = $('#if_not_for_rent')
+
+
+            if (status == for_rent_id_from_db) {
+                if_for_rent.css("display", "block");
+                if_not_for_rent.css("display", "none");
+            } else {
+                if_not_for_rent.css("display", "block");
+                if_for_rent.css("display", "none");
+
+            }
+
+            // again
+            let type = $("#id_type").val();
+            let for_rent = $("#for_rent").val();
+            let apartment_id = $("#apartment_id").val();
+
+             if (type == apartment_id && status == for_rent) {
+                $('#managebymanyumbadiv').css('display', 'block');
+                $('#price_block').empty();
+                // $('#price_block').css('display', 'none');
+            }
+            else {
+                $('#managebymanyumbadiv').css('display', 'none');
+                $('#price_block').css('display', 'block');
+            }
+        }
+
+        document.getElementById("id_type").onchange = function () {
+            console.log('Type chnage');
+            let land_id = $("#land_id").val();
+            let id_type = $("#id_type").val();
+            let office_id = $("#office_id").val();
+
+            let type = $("#id_type").val();
+            let status = $("#id_status").val();
+            let for_rent = $("#for_rent").val();
+            let apartment_id = $("#apartment_id").val();
+            console.log(for_rent);
+
+
+            // block which toggles
+            toggle_block = $('#house_fields')
+            toggle_block2 = $('#media-section')
+            toggle_block3 = $('#house-amenity-section')
+            toggle_block4 = $('#land-amenity-section')
+            toggle_block5 = $('#office-amenity-section')
+
+            // area-size
+            area_size = $('#area-size')
+            land_size = $('#land-size')
+
+            // other_image_href
+            other_image_href = $('#other_image_href')
+
+
+            if (id_type == land_id) {
+                area_size.css("display", "none");
+                land_size.css("display", "block");
+                toggle_block.css("display", "none");
+                toggle_block2.css("display", "none");
+                toggle_block3.css("display", "none");
+                toggle_block4.css("display", "block");
+                toggle_block5.css("display", "none");
+                
+                // change text to land related thing
+                other_image_href.html("Other Property Images <i class='icon-chevron-down float-right'></i>");
+                
+                
+            } else if(id_type == office_id){
+                area_size.css("display", "block");
+                land_size.css("display", "none");
+                toggle_block.css("display", "none");
+                toggle_block2.css("display", "none");
+                toggle_block3.css("display", "none");
+                toggle_block4.css("display", "none");
+                toggle_block5.css("display", "block");
+                
+                
+                other_image_href.html("Other Property Images <i class='icon-chevron-down float-right'></i>");
+            }else {
+                area_size.css("display", "block");
+                land_size.css("display", "none");
+                toggle_block.css("display", "block");
+                toggle_block2.css("display", "block");
+                toggle_block3.css("display", "block");
+                toggle_block4.css("display", "none");
+                toggle_block5.css("display", "none");
+
+                other_image_href.html("Living Room <i class='icon-chevron-down float-right'></i>");
+            }
+
+         
+
+            if (type == apartment_id && status == for_rent) {
+                console.log('flipped');
+                $('#managebymanyumbadiv').css('display', 'block');
+                // $('#price_block').css('display', 'none');
+                $('#price_block').empty();
+            }
+            else {
+                $('#managebymanyumbadiv').css('display', 'none');
+                // $('#price_block').css('display', 'block');
+                $('#price_block').html(
+                `
+                    <div class="form-group" id="price_inner_block">
+                            <label>Price/Rent: <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Ksh</span>
+                                </span>
+                                <input type="number" required class="form-control"  id="price" placeholder="property price" name="price">
+                            </div>
+                    </div>
+                `)
+            }
+        }
+    }
+
+
+</script>

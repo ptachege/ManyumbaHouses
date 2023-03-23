@@ -1,0 +1,41 @@
+{% extends "HouseListing/base.html" %}
+
+
+
+{% block extrastyle %}
+
+<style>
+  body {
+    padding-top: 120px;
+  }
+</style>
+
+{% endblock extrastyle %}
+{% block body %}
+
+<!-- start here -->
+
+<div class="container">
+  <div class="card">
+    <div class="row">
+      <div class="col-4 col-md-2">
+        <i
+          class="flaticon-search icon-3x"
+          style="
+            color: red;
+            border: solid 1px red;
+            border-radius: 50%;
+            padding: 20px 25px;
+          "
+        ></i>
+      </div>
+
+      <div class="col-8 col-md-10 my-2">
+        <h5>
+         The link you clicked in invalid. Sorry, Try again.
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

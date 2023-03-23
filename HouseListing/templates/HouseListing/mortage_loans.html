@@ -1,0 +1,225 @@
+{% extends 'HouseListing/base.html' %}
+
+{% load static %}
+
+
+{% block headstyle %}
+
+    <link href="{% static 'HouseListing/global_assets/css/icons/material/styles.min.css' %}" rel="stylesheet"
+        type="text/css">
+
+<style>
+    .myiconsize {
+        font-size: 4.3rem !important;
+        color: black;
+    }
+
+    .owner-text {
+        font-weight: 800;
+    }
+
+    .icon-circle {
+
+        width: 7rem;
+        height: 7rem;
+        display: flex;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        background: white;
+        border-radius: 50%;
+        box-shadow: rgb(0 0 0 / 30%) 0px 2px 4px 0px;
+    }
+
+    .btn {
+        line-height: 14px !important;
+    }
+</style>
+
+{% endblock headstyle %}
+
+
+
+{% block body %}
+
+<div class="content-wrapper">
+    <section class="listing-wrap pt-4">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-12">
+                    <h2 style="color: #052286;">Looking for a mortgage? Let Manyumba be your guide.</h2>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col-12 mb-3 text-center">
+                    <div class="text-muted">
+                        <h4>Try our helpful mortgage tools</h4>
+                        <p class="text-muted">
+                            Overwhelmed by mortgages? Don’t sweat it. Here are some tools to help make it a little easier.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-4 offset-md-2">
+                    <div class="property-card style3 bg-light">
+                        <div class="property-img text-center">
+                            <div class="icon-circle mb-2">
+                                <i class="flaticon-search-2 myiconsize"></i>
+                            </div>
+                        </div>
+                        <div class="property-info text-center pt-2">
+                            <h5 class="owner-text">Mortgage Calculator</h5>
+                            <a href="{% url 'HouseListing:mortage_loans_details' %}" class="btn style2 btn-sm mt-3">
+                                Explore
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 pt-4">
+                    <div class="property-card style3 bg-light">
+                        <div class="property-img text-center">
+                            <div class="icon-circle mb-2">
+                                <i class="mi-local-shipping myiconsize"></i>
+                            </div>
+                        </div>
+                        <div class="property-info text-center pt-2">
+                            <h5 class="owner-text">Relocation Calculator</h5>
+                            <a href="{% url 'HouseListing:mortage_relocation' %}" class="btn style2 btn-sm mt-3">
+                                Explore
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 my-4 text-center">
+                    <h5 class="text-muted">
+                        Discover your loan options
+                    </h5>
+                    <p class="text-muted mb-4">Here’s a look at some common mortgage types to help you see which loan is right for you.</p>
+                </div>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <th width="0.2" class="Table__TableHeadCell-latbb5-1 fSMDJQ"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Loan type</span></th>
+                                    <th width="0.25" class="Table__TableHeadCell-latbb5-1 eYVelx"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Best for</span></th>
+                                    <th width="0.125" class="Table__TableHeadCell-latbb5-1 fvmVzO"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Current avg. APR</span></th>
+                                    <th width="0.125" class="Table__TableHeadCell-latbb5-1 fvmVzO"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Min. down payment*</span></th>
+                                    <th width="0.3" class="Table__TableHeadCell-latbb5-1 cbA-dtR"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">More details</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Low monthly payments that won’t change</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">7.11%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">30-year fixed is the most common mortgage type</span>
+                                    </td>
+                                </tr>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">15-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Paying loan off faster (vs 30-year loans)</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.27%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Payments are higher, but much less interest is paid over
+                                            time vs 30-yr loans</span></td>
+                                </tr>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">7/1 ARM</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those who might sell within 7 years</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.29%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">After 7 years, interest rate &amp; mo. payment can change
+                                            annually</span></td>
+                                </tr>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">5/1 ARM</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those who might sell within 5 years</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.13%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">After 5 years, interest rate &amp; mo. payment can change
+                                            annually</span></td>
+                                </tr>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">FHA 30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those with lower credit scores</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">7.55%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">3.5%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Mortgage insurance is required (upfront fee &amp; mo.
+                                            insurance premium)</span></td>
+                                </tr>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">VA 30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Qualifying veterans and active military</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">6.65%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">0.0%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">PMI is not required for VA loans, but there may be a VA
+                                            funding fee</span></td>
+                                </tr>
+                                <tr class="Table__TableRow-latbb5-0 ezcNaI">
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 csxWRm">Jumbo 30-Year Fixed</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Those purchasing high-priced homes</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">0.00%</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Varies</span></td>
+                                    <td width="auto" class="Table__TableCellWrapper-latbb5-2 hPBAQA"><span
+                                            class="Text__TextBase-sc-1cait9d-0 iTXUhg">Jumbo loans are for loan amounts that exceed conventional
+                                            loan limits</span></td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        
+
+            
+        </div>
+    </section>
+</div>
+
+{% endblock body %}

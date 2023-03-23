@@ -1,0 +1,209 @@
+{% extends 'HouseListing/default_listing_base.html' %}
+{% load static %}
+
+ {% block header %}
+    <style>
+
+        .fw-medium {
+            font-weight: 500;
+        }
+        .avatar-sm {
+            height: 3rem;
+            width: 3rem;
+        }
+        .avatar-title {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background-color: #B11226;
+            color: #fff;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            font-weight: 500;
+            height: 100%;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+                .card-animate {
+            -webkit-transition: all .4s;
+            transition: all .4s;
+        }
+
+        .card-animate:hover {
+        -webkit-transform: translateY(calc(-1.5rem / 5));
+        transform: translateY(calc(-1.5rem / 5));
+        -webkit-box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        }
+    </style>
+ {% endblock header %}
+
+{% block body %}
+
+       <!-- start page title -->
+       <div class="breadcrumb-line breadcrumb-line-light header-elements-lg-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="/" class="breadcrumb-item"><i class="icon-home5 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Dashboard</span>
+            </div>
+        </div>
+    </div>
+       <div class="container-fluid">        
+                    <!-- end page title -->
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="d-flex flex-column h-100">
+                            <div class="row">
+                                {% if not request.user.userprofile %}
+                                <div class="col-12">
+                                    <div class="alert alert-warning text-center">
+                                        <h6> <i class="icon-warning mr-2"></i> <small>Some features are not available to you. This is because you need
+                                                to create a profile and verify your account</small> </h6>
+                                        <a href="{% url 'HouseListing:create_profile' 'listing' %}" id="verify" class="btn btn-outline-success">Create
+                                            Profile
+                                            <span id="spinner" class=""></span></a>
+                                    </div>
+                                </div>
+                                
+                                {% else %}
+                                
+                                    {% if not request.user.userprofile.account_verified %}
+                                    <div class="col-12">
+                                            <div class="alert alert-warning text-center">
+                                                <h6> <i class="icon-warning mr-2"></i> <small>Some features are not available to you. This is because your account is unverified</small>  </h6>
+                                                <a href="{% url 'HouseListing:verify_account' 'listing' %}" id="verify" class="btn btn-outline-success">Verify <span id="spinner" class=""></span></a>
+                                            </div>
+                                        </div>
+                                        
+                                    {% endif %}
+                                {% endif %}
+                                    
+                                   
+
+                                    <div class="col-md-6">
+                                        <div class="card card-animate">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <p class="fw-medium text-muted mb-0">Approved Properties</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{approved_properties}}">{{approved_properties}}</span></h2>
+                                                        <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">
+                                                                <i class="ri-arrow-up-line align-middle"></i> {{approved_percentage|floatformat:0}} %
+                                                            </span> of your properties</p>
+                                                    </div>
+                                                    <div>
+                                                        <div class="avatar-sm flex-shrink-0">
+                                                            <span class="avatar-title bg-primary rounded-circle fs-2">
+                                                                <i class="icon-office"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- end card body -->
+                                        </div> <!-- end card-->
+                                    </div> <!-- end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="card card-animate">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <p class="fw-medium text-muted mb-0">Pending Properties</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{pending_properties}}">{{pending_properties}}</span></h2>
+                                                        <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0">
+                                                                <i class="ri-arrow-down-line align-middle"></i> {{pending_percentage|floatformat:0}} %
+                                                            </span> of all your properties</p>
+                                                    </div>
+                                                    <div>
+                                                        <div class="avatar-sm flex-shrink-0">
+                                                            <span class="avatar-title bg-danger rounded-circle fs-2">
+                                                                <i class="icon-city"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- end card body -->
+                                        </div> <!-- end card-->
+                                    </div> <!-- end col-->
+                                </div> <!-- end row-->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="/my_listing/" style="color: inherit;">
+                                            <div class="card card-animate">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
+                                                            <p class="fw-medium text-muted mb-0">Active Listings</p>
+                                                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{active_listings}}">{{active_listings}}</span>
+                                                            </h2>
+                                                            <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0">
+                                                                    <i class="ri-arrow-down-line align-middle"></i> {{active_listings_percentage|floatformat:0}} %
+                                                                </span> of all your properties</p>
+                                                        </div>
+                                                        <div>
+                                                            <div class="avatar-sm flex-shrink-0">
+                                                                <span class="avatar-title bg-success rounded-circle fs-2">
+                                                                    <i class="icon-check"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- end card body -->
+                                            </div> <!-- end card-->
+                                        </a>
+                                    </div> <!-- end col-->
+
+                                    <div class="col-md-6">
+                                        <a style="color: inherit;" href="/my_listing/#bottom-justified-divided-tab2">
+                                            <div class="card card-animate">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>
+                                                            <p class="fw-medium text-muted mb-0">Off-market Listings</p>
+                                                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="{{off_market_properties}}">{{off_market_properties}}</span></h2>
+                                                            <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">
+                                                                    <i class="ri-arrow-up-line align-middle"></i>{{off_market_properties_percentage|floatformat:0}} %
+                                                                </span> vs. previous month</p>
+                                                        </div>
+                                                        <div>
+                                                            <div class="avatar-sm flex-shrink-0">
+                                                                <span class="avatar-title bg-success rounded-circle fs-2">
+                                                                    <i class="icon-hour-glass"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- end card body -->
+                                            </div> <!-- end card-->
+                                        </a>
+                                    </div> <!-- end col-->
+                                </div> <!-- end row-->
+                            </div>
+                        </div> <!-- end col-->
+                    </div> 
+        </div>
+
+
+
+
+
+{% endblock body %}
+
+
+{% block scripts %}
+
+<script>
+  $("#verify").click(function (e) {
+    $(this).addClass('disabled')
+    $("#spinner").addClass("spinner-border spinner-border-sm");
+  });
+</script>
+{% endblock scripts %}
+
+    

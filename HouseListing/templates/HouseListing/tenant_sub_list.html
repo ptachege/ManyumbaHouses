@@ -1,0 +1,156 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/main/jquery.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/main/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/loaders/blockui.min.js' %}"></script>
+
+
+<style>
+	body {
+		font-weight: 600;
+	}
+</style>
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+		<a href="{% url 'HouseListing:tenants_list' %}" class="btn btn-outline-dark btn-sm ml-auto"
+			style="margin-right: 20px; margin-bottom: 10px;border-radius: 5px;">
+			<i class="icon-arrow-left15 mr-1"></i>
+			Go
+			Back</a>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card my-4">
+				<div class="card-header header-elements-inline" style="background-color:rgb(50,65,72);color: #fff;">
+					<h5 class="card-title"><i class="icon-users4"></i> &nbsp;All Tenants Under {{this_property.property_title}}</h5>
+					<div class="header-elements">
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="collapse"></a>
+							<a class="list-icons-item" data-action="reload"></a>
+							<a class="list-icons-item" data-action="remove"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card my-4">
+				<div class="card-body">
+					<ul class="nav nav-tabs nav-tabs-bottom border-bottom-0 nav-justified">
+						<li class="nav-item"><a href="#bottom-justified-divided-tab1" class="nav-link active" data-toggle="tab"><i class="icon-files-empty2 mr-2"></i> Current Tenants</a></li>
+						<li class="nav-item"><a href="#bottom-justified-divided-tab2" class="nav-link" data-toggle="tab"> <i class="icon-books mr-2"></i> Previous Tenants</a></li>
+					</ul>
+
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="bottom-justified-divided-tab1">
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th><b>#</b></th>
+                                            <th><b>Id Number</b></th>
+                                            <th><b>Name</b></th>
+                                            <th><b>Unit</b></th>
+                                            <th><b>Action</b></th>
+										</tr>
+									</thead>
+									<tbody>
+		
+										{% for t in all_active_tenants %}
+
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{t.tenant.id_number}}</td>
+                                            <td>{{t.tenant.first_name}} {{t.tenant.last_name}}</td>
+                                            
+											<td>{{t.house.house_code}}</td>
+                                            <td>
+                                                <a href="{% url 'HouseListing:tenant_details' t.tenant.id %}" class="btn btn-outline-dark btn-sm">
+                                                    <!-- <i class="icon-eye4" style="color:black;"></i> -->
+													View
+                                                </a>
+                                            </td>
+                                        </tr>
+		
+										{% empty %}
+										<tr>
+											<td colspan="7">
+												<div class="alert alert-warning text-center">
+													<p>
+														<i class="icon-warning mr-3"></i> No Associated (current) Tenant for this property.
+													</p>
+												</div>
+											</td>
+										</tr>
+		
+										{% endfor %}
+		
+									</tbody>
+								</table>
+							</div>
+		
+						</div>
+
+						<div class="tab-pane fade" id="bottom-justified-divided-tab2">
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th><b>#</b></th>
+                                            <th><b>Id Number</b></th>
+                                            <th><b>First Name</b></th>
+                                            <th><b>Last Name</b></th>
+                                            <th><b>Action</b></th>
+										</tr>
+									</thead>
+									<tbody>
+		
+										{% for t in all_terminated_tenants %}
+
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{t.tenant.id_number}}</td>
+                                            <td>{{t.tenant.first_name}}</td>
+                                            <td>{{t.tenant.last_name}}</td>
+                                            <td>
+                                                <a href="{% url 'HouseListing:tenant_details' t.tenant.id %}">
+                                                    <i class="icon-eye4" style="color:black;"></i>
+                                                </a>
+                                                <a href="#" style="margin-left: 10px;">
+                                                    <i class="icon-bin" style="color:red; font-size: 16px;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+		
+										{% empty %}
+										<tr>
+											<td colspan="7">
+												<div class="alert alert-warning text-center">
+													<p>
+														<i class="icon-warning mr-3"></i> No Associated (Previous) Tenant for this property.
+													</p>
+												</div>
+											</td>
+										</tr>
+		
+										{% endfor %}
+		
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+{% block scripts %}
+{% endblock scripts %}
+
+{% endblock body %}

@@ -1,0 +1,1078 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% load humanize %}
+{% block header %}
+
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/loaders/blockui.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/notifications/sweet_alert.min.js' %}"></script>
+
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid my-4">
+	<div class="row">
+		<a href="{{request.META.HTTP_REFERER}}" class="btn btn-outline-dark btn-sm ml-auto"
+			style="margin-right: 20px; margin-bottom: 10px;border-radius: 5px;">
+			<i class="icon-arrow-left15 mr-1"></i>
+			Go
+			Back
+		</a>
+	</div>
+	<div class="row">
+		<!-- <div class="col-md-12">
+			<div class="card">
+				<div class="card-header header-elements-inline" style="background-color:rgb(50,65,72);color: #fff;">
+					<h3 class="card-title"><i class="icon-office" style="font-size: 25px;"></i>
+						&nbsp;{{property.property_title}}</h3>
+					<div class="header-elements">
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="reload"></a>
+							<a class="list-icons-item" data-action="remove"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		{% if not is_approve and property.managed_by_manyumba %}
+			<div class="col-12">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card" style="background-color: #252B36; color: #fff;">
+							<div class="card-body text-center">
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<div class="confetti-piece"></div>
+								<h3 class="my-2 myzindex my-greetings">{{property.property_title}}</h3>		
+								<h6 class="my-3 myzindex">Welcome to your {{property.property_title}} dashboard.</h6>	
+
+								<a href="" class="btn btn-outline-light my-2 myzindex">Property Balance: Ksh 3,000</a>								
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="card social-widget-card">
+							<div class="card-body" style="padding-top: 5px">
+								<div class="row b-b-light my-4">
+									<div class="col-sm-6 text-center b-r-light my-3">
+										<span>Account balance</span>
+										<h4 class="counter mb-0">KSh. 1,936.00</h4>
+									</div>
+									<div class="col-sm-6 text-center my-3">
+										<span>October Rent collection</span>
+										<h4 class="counter mb-0">Ksh. 230.00</h4>
+						
+									</div>
+								</div>
+								<div class="row my-3">
+									<div class="col text-center">
+										<span>Accrued Rent</span>
+										<h4 class="counter mb-0 text-danger">Ksh. 498,221.00</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>	
+				
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<h6 class="font-weight-bold">Monthly Revenue Collections</h6>
+								<div class="chart-container" style="min-height: 230px">
+									<canvas id="overallchart4" height="360"></canvas>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xl-6 col-50 box-col-6 des-xl-50">
+						<div class="card social-widget-card">
+							<div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+								<div class="d-flex justify-content-center my-3">
+									<i class="icon-wallet text-info mx-2" style="font-size: 2em"></i>
+									<h6>Financial Summary</h6>
+								</div>
+							</div>
+							<div class="card-body" style="padding-top: 5px">
+								<div class="redial-social-widget my-3 radial-bar-100" data-label="50%"
+									style="background-image: linear-gradient(342deg, #00b5ec 4.77%, transparent 50%, transparent), linear-gradient(270deg, #00b5ec 50%, rgba(36, 105, 92, 0.1) 50%, rgba(36, 105, 92, 0.1));">
+									<i class="font-primary">4.77%</i>
+								</div>
+								<br>
+								<div class="progress-showcase my-3">
+									<div class="progress sm-progress-bar" style="height: 20px">
+										<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0"
+											aria-valuemax="100" style="width: 4.77%; height: 20px; background-color: #00b5ec"></div>
+									</div>
+								</div>
+								<br>
+								<h5 class="b-b-light text-center font-weight-bold" style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 2px;">{{property.property_title}}</h5>
+								<div class="row my-3">
+									<div class="col text-center b-r-light">
+										<span>Total Collections</span>
+										<h4 class="counter mb-0">KSh. 340.00</h4>
+									</div>
+									<div class="col text-center">
+										<span>Total Billed</span>
+										<h4 class="counter mb-0">Ksh. 6,820.00</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6 col-50 box-col-6 des-xl-50">
+						<div class="card social-widget-card">
+							<div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+								<div class="d-flex justify-content-center my-3">
+									<i class="icon-office text-info mx-2" style="font-size: 2em"></i>
+									<h6>Units Summary</h6>
+								</div>
+								
+							</div>
+							<div class="card-body" style="padding-top: 5px">
+								<div class="redial-social-widget my-2 radial-bar-100" data-label="50%"
+									style="background-image: linear-gradient(342deg, #00b5ec 93%, transparent 50%, transparent), linear-gradient(270deg, #00b5ec 50%, rgba(36, 105, 92, 0.1) 50%, rgba(36, 105, 92, 0.1));">
+									<i class="font-primary">{{property.calculate_occupancy}}%</i>
+								</div>
+								<br>
+								<div class="progress-showcase my-1">
+									<div class="progress sm-progress-bar" style="height: 20px">
+										<div class="progress-bar round-progress" role="progressbar" aria-valuenow="25" aria-valuemin="0"
+											aria-valuemax="100" style="width: {{property.calculate_occupancy}}%; height: 20px; background-color: #00b5ec"></div>
+									</div>
+								</div>
+								<br>
+								<h5 class="b-b-light text-center font-weight-bold" style="padding-bottom: 5px; padding-top: 5px; margin-bottom: 2px;">
+									{{property.property_title}}</h5>
+								<div class="row my-3">
+									<div class="col text-center text-danger b-r-light">
+										<span class="font-weight-bold text-danger">Vacant Units</span>
+										<h4 class="counter mb-0">{{property.return_vacant_units}}</h4>
+									</div>
+									<div class="col text-center">
+										<span>Total Units</span>
+										<h4 class="counter mb-0">{{property.return_all_units}}</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--  -->
+				</div>
+
+				<div class="row">
+					<div class="col-12 col-md-6 des-xl-50">
+						<div class="card social-widget-card">
+							<div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+								<div class="d-flex justify-content-center my-3">
+									<i class="icon-users text-info mx-2" style="font-size: 2em"></i>
+									<h6>Tenants Report</h6>
+								</div>
+								<div class="d-flex justify-content-start mx-4">
+									<a class="btn btn-sm btn-dark" href="{% url 'HouseListing:tenant_sub_list' property.id %}">View Tenants</a>
+								</div>
+							</div>
+							<div class="card-body my-3 py-3">
+								<div class="row d-flex justify-content-center">
+									<div class="col-md-3 text-center">
+										<span>Tenants</span>
+										<h3 class="font-weight-bold counter mb-0">{{active_tenants}}</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="col-md-12">
+			<div class="row">
+
+			{% if property.managed_by_manyumba %}
+			
+			
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header header-elements-inline" style="background-color: #252B36;color: #fff;">
+						<h3 class="card-title">
+							<i class="icon-library2" style="font-size: 25px;"></i>
+							&nbsp; All Units.
+						</h3>
+						<div class="header-elements">
+							<div class="list-icons">
+								<a class="list-icons-item" data-action="reload"></a>
+								<a class="list-icons-item" data-action="remove"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card my-3">
+					<div class="card-body" style="height: 300px; overflow-y: scroll;">
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th><b>#</b></th>
+										<th><b>Type</b></th>
+										<th><b>Rent</b></th>
+										<th><b>Vacancy</b></th>
+										<th><b>Action</b></th>
+									</tr>
+								</thead>
+								<tbody>
+			
+									{% for house in property_houses %}
+			
+									<tr>
+										<td>{{house.house_code}}</td>
+										<td>{{house.house_type}}</td>
+										<td>Ksh {{house.rent|intcomma }}</td>
+										<td>
+			
+											{% if house.vacant %}
+											<span class="badge badge-warning">
+												Vacant
+											</span>
+											{% else %}
+											<span class="badge badge-primary">
+												Occupied
+											</span>
+			
+											{% endif %}
+			
+										</td>
+										<td style="display: flex;">
+											<a href="#">
+												<i class="icon-pencil5 mr-2" data-toggle="modal"
+													data-target="#showModal{{house.id}}" style="color:#333;"></i>
+											</a>
+											<a href="{% url 'HouseListing:house_details' house.id %}">
+												<i class="icon-eye4 ml-2" style="color:black;"></i>
+											</a>
+										</td>
+									</tr>
+			
+			
+									<div class="modal fade" id="showModal{{house.id}}" tabindex="-1"
+										aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<form action="{% url 'HouseListing:update_house' house.id %}" method="post">
+													{% csrf_token %}
+													<div class="modal-body">
+														<form action="" method="POST">
+															{% csrf_token %}
+															<fieldset>
+																<legend class="font-weight-semibold" style="font-size: 20px;"><i
+																		class="icon-library2 mr-2" style="font-size: 20px;"></i>
+																	Edit House.
+																	<button type="button" class="close"
+																		data-dismiss="modal">&times;</button>
+																</legend>
+			
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="form-group">
+																			<label>House Code:</label>
+																			<input type="text" required name="house_code"
+																				placeholder="#code" value="{{house.house_code}}"
+																				class="form-control border-teal border-1">
+																		</div>
+																	</div>
+			
+																	<div class="col-md-6">
+																		<div class="form-group">
+																			<label>Rent:</label>
+																			<input type="text" name="rent" required
+																				placeholder="Ksh 1,000" value="{{house.rent}}"
+																				class="form-control border-teal border-1">
+																		</div>
+																	</div>
+			
+																</div>
+			
+																<div class="text-right">
+																	<button type="submit" class="btn btn-primary" 
+																	{% if request.user.userprofile.user_account_type == 'Demo' %}
+																		disabled										
+																	{% endif %}
+																	>Update<i
+																			class="icon-checkmark2 ml-2"></i></button>
+																</div>
+			
+			
+															</fieldset>
+														</form>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+			
+									{% endfor %}
+			
+			
+								</tbody>
+							</table>
+						</div>
+			
+					</div>
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="col-12">
+
+				<ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+					<li class="nav-item"><a href="#basic_info" class="nav-link active" data-toggle="tab">Basic Info <i
+								class="icon-user ml-2"></i></a></li>
+					<li class="nav-item"><a href="#location" class="nav-link" data-toggle="tab">
+							Location
+							<i class="icon-pin ml-2"></i></a></li>
+					<li class="nav-item"><a href="#bussiness" class="nav-link" data-toggle="tab">
+							Gallery
+							<i class="icon-cash ml-2"></i></a></li>
+					<li class="nav-item"><a href="#relations" class="nav-link" data-toggle="tab">
+							Amenities
+							<i class="icon-attachment ml-2"></i></a></li>
+
+				</ul>
+
+				<div class="tab-content">
+					<!-- basic info -->
+					<div class="tab-pane fade show active" id="basic_info">
+
+						<div class="row">
+							<div class="col-md-7">
+								<div class="card">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-md-5">
+
+												{% if all_associated_avatars %}
+
+												<div id="carouselExampleIndicators" class="carousel slide"
+													data-ride="carousel">
+													<ol class="carousel-indicators">
+
+														{% for avatar in all_associated_avatars %}
+
+														<li data-target="#carouselExampleIndicators"
+															data-slide-to="{{forloop.counter0}}" class="
+																	{% if forloop.counter0 == 0 %}
+																	active																	
+																	{% endif %}
+																		"></li>
+														{% endfor %}
+
+														
+
+													</ol>
+													<div class="carousel-inner">
+														{% for avatar in all_associated_avatars %}
+														<div class="carousel-item {% if forloop.counter0 == 0 %}
+																	active																	
+																	{% endif %}">
+															<img src="{{avatar.image.url}}" class="d-block w-100" alt="...">
+														</div>
+														{% endfor %}
+
+													</div>
+													<a class="carousel-control-prev" style="color: black!important;"
+														href="#carouselExampleIndicators" role="button" data-slide="prev">
+														<i class="icon-arrow-left15"></i>
+														<span class="sr-only">Previous</span>
+													</a>
+													<a class="carousel-control-next" style="color: black!important;"
+														href="#carouselExampleIndicators" role="button" data-slide="next">
+														<i class="icon-arrow-right15"></i>
+														<span class="sr-only">Next</span>
+													</a>
+												</div>
+												{% else %}
+
+												<img src="{{property.featured_image.url}}" class="img-fluid user-img " />
+												<div class="text-center">
+													<a href="#" class=" my-3 btn btn-outline-dark">
+														Upload Profile
+													</a>
+												</div>
+
+												{% endif %}
+											</div>
+											<div class="col-md-7">
+												<div class="container-fluid">
+													<table class="ml-4">
+														<tr>
+															<td style="padding-bottom: 10px;"><b>Property Title:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.property_title}}</td>
+														</tr>
+														<tr>
+															<td style="padding-bottom: 10px;"><b>Type:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">{{property.type}}
+															</td>
+														</tr>
+														<tr>
+															<td style="padding-bottom: 10px;"><b>Category:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.status}}</td>
+														</tr>
+														<tr>
+															<td style="padding-bottom: 10px;"><b>City:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.city.city_name}}</td>
+														</tr>
+														<tr>
+															<td style="padding-bottom: 10px;"><b>
+
+																	street:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.street}}</td>
+														</tr>
+														<tr>
+															<td style="padding-bottom: 10px;"><b>price:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																Ksh {{property.price|intcomma}}</td>
+														</tr>
+														<tr>
+															{% if property.type.name == 'Land' %}
+
+															<td style="padding-bottom: 10px;"><b>Land Size:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.landsize}}</td>
+
+															{% else %}
+
+															<td style="padding-bottom: 10px;"><b>area_size:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.area_size}} sqft</td>
+
+															{% endif %}
+														</tr>
+														{% if property.type.name != 'Land' and property.type.name != 'Office Space' %}
+														<tr>
+															<td style="padding-bottom: 10px;"><b>Bedrooms:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+																{{property.bedrooms}}</td>
+														</tr>
+														{% endif %}
+
+														<tr>
+															<td style="padding-bottom: 10px;"><b>Status:</b></td>
+															<td style="padding-bottom: 10px;" class="pl-4">
+
+																{% if property.approved_by_admin == 1 %}
+																<span class="badge badge-success">
+																	Approved
+																</span>
+																{% else %}
+				
+																{% if property.approved_by_admin == 2 %}
+																<span class="badge badge-danger badge-striped"> Rejected </span>
+																	
+																{% else %}
+																
+																<span class="badge badge-warning badge-striped"> Pending </span>
+																{% endif %}
+																	
+																{% endif %}
+
+															</td>
+														</tr>
+
+													</table>
+													<a href="{% url 'HouseListing:edit_mylisting' property.id 'management' %}" class="btn btn-outline-dark btn-sm my-2 ml-4"
+														style="border-radius: 5px;">
+														<i class="icon-pencil5 mr-1"></i> Edit Property</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="card">
+									<div class="card-body">
+										<div class="col-md-12 align-items-left">
+											<table class="ml-4">
+
+												{% if property.type.name != 'Land' and property.type.name != 'Office Space'%}
+
+												<tr>
+													<td style="padding-bottom: 10px;"><b>
+															<i class="icon-arrow-right15 mr-1"></i>
+															Rooms:</b></td>
+													<td style="padding-bottom: 10px;" class="pl-4">{{property.rooms}}</td>
+												</tr>
+												<tr>
+													<td style="padding-bottom: 10px;"><b>
+															<i class="icon-arrow-right15 mr-1"></i>
+															bathrooms:</b></td>
+													<td style="padding-bottom: 10px;" class="pl-4">{{property.bathrooms}}
+													</td>
+												</tr>
+												<tr>
+													<td style="padding-bottom: 10px;"><b>
+															<i class="icon-arrow-right15 mr-1"></i>
+															garages:</b></td>
+													<td style="padding-bottom: 10px;" class="pl-4">{{property.garages}}</td>
+												</tr>
+												{% endif %}
+
+												<tr>
+													<td style="padding-bottom: 10px;"><b>
+															<i class="icon-arrow-right15 mr-1"></i>
+															Managed By manyumba:</b></td>
+													<td style="padding-bottom: 10px;" class="pl-4">
+
+														{% if property.managed_by_manyumba %}
+														<span class="badge badge-success">
+															Yes
+														</span>
+														{% else %}
+														<span class="badge badge-secondary">
+															No
+														</span>
+														{% endif %}
+
+													</td>
+												</tr>
+												<tr>
+													<td style="padding-bottom: 10px;"><b>
+															<i class="icon-arrow-right15 mr-1"></i>
+															Listed:</b></td>
+													<td style="padding-bottom: 10px;" class="pl-4">
+
+														{% if property.publish %}
+														<span class="badge badge-info">
+															Yes
+														</span>
+														{% else %}
+														<span class="badge badge-secondary">
+															No
+														</span>
+														{% endif %}
+
+													</td>
+												</tr>
+
+											</table>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="tab-pane fade" id="location">
+						<div class="row">
+							<div class="col-12">
+								<div class="card mb-3">
+									<div class="card-body">
+										<h2>Google map will go here</h2>
+										<div id="map" style="height:500px;">
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- bussiness -->
+
+					<div class="tab-pane fade" id="bussiness">
+						<div class="row">
+
+							<div class="col-md-6">
+								<div class="card" style="border-left: solid 3px teal;">
+									<img class="card-img-top" style="object-fit:cover;max-height:280px;min-height:280px;"
+										src="{{property.featured_image.url}}" alt="Card image cap">
+								</div>
+							</div>
+
+							{% for avatar in all_associated_avatars %}
+							<div class="col-md-6">
+								<div class="card" style="border-left: solid 3px teal;">
+									<div class="card-body">
+										<img class="card-img-top"
+											style="object-fit:cover;max-height:280px;min-height:280px;"
+											src="{{avatar.image.url}}" alt="Card image cap">
+
+									</div>
+								</div>
+							</div>
+							{% empty %}
+							<!-- <div class="col-12 text-center">
+
+
+								<div class="alert alert-warning">
+									No Gallery uploaded for this property
+								</div>
+							</div> -->
+
+							{% endfor %}
+
+
+						</div>
+					</div>
+
+					<!-- relations -->
+
+					<div class="tab-pane fade" id="relations">
+						<div class="card">
+							{% if property.type.name != 'Land' %}
+
+
+							{% if property.type.name == 'Office Space' %}
+
+							<div class="card-body">
+								<hr>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">BusinessLounge</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.BusinessLounge %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Majortransportlinks</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Majortransportlinks %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">WIFI</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.WFI %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">MeetingRooms</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.MeetingRooms %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">CCTV</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.CCTV %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Parking</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Parking %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Elevator</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Elevator %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+
+							{% else %}
+							<div class="card-body">
+								<hr>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Water</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Water %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Electricity</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Electricity %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">WIFI</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.WFI %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Ac</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Ac %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Gateman</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Gateman %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Parking</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Parking %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Swimming_Pool</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Swimming_Pool %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Balcony</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Balcony %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Gym</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Gym %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">Play_Area</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.Play_Area %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+							</div>
+
+							{% endif %}
+
+
+							{% else %}
+							<div class="card-body">
+								<hr>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">ElectricSupply</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.ElectricSupply %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">WaterSupply</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.WaterSupply %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">RainWaterDrainage</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.RainWaterDrainage %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-6 text-center">
+										<h6 class="font-weight-bold">DomesticSewage</h6>
+
+									</div>
+									<div class="col-6">
+										{% if property.DomesticSewage %}
+										<i class="icon-checkmark2" style="color:green; font-size: 25px;"></i>
+										{% else %}
+										<i class="icon-cross3" style="color:red; font-size: 25px;"></i>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>		
+			</div>
+
+			
+
+			{% if is_approve and request.user.is_superuser %}
+
+			
+
+			<div class="col-md-12">
+				<div class="card-footer">
+					<a href="{% url 'HouseListing:reject_property' property.id %}" class="btn btn-danger btn-sm">Reject</a>
+					<a href="{% url 'HouseListing:approve_property' property.id %}"
+						class="btn btn-success btn-sm float-right">Approve</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		</div>
+	</div>
+</div>
+
+
+{% block scripts %}
+<script>
+	var SweetAlert = function () {
+
+		var _componentSweetAlert = function () {
+			if (typeof swal == 'undefined') {
+				console.warn('Warning - sweet_alert.min.js is not loaded.');
+				return;
+			}
+			var swalInit = swal.mixin({
+				buttonsStyling: false,
+				confirmButtonClass: 'btn btn-primary',
+				cancelButtonClass: 'btn btn-light'
+			});
+			$('#sweet_warning').on('click', function () {
+				swalInit({
+					title: 'You are about to terminate this Lease. Are you Sure?',
+					text: 'Note that this action is critical!',
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Yes, Proceed!',
+					position: 'top',
+
+				});
+			});
+
+		};
+		return {
+			initComponents: function () {
+				_componentSweetAlert();
+			}
+		}
+
+	}();
+
+	document.addEventListener('DOMContentLoaded', function () {
+		SweetAlert.initComponents();
+	});
+
+
+</script>
+
+<script>
+
+	var ctx = document.getElementById('overallchart4').getContext('2d');
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			// labels: ['a', 'b', 'c'],
+	datasets: [
+		{
+			label: 'Revenue',
+			data: {
+				'Jan':1, 
+				'Feb':2,
+				'March':2,
+				'April':2,
+				'May':2,
+				'June':2,
+				'July':25,
+			},
+		backgroundColor: [
+			'rgba(255, 99, 132, 0.5)',
+			'rgba(54, 162, 235, 0.5)',
+			'rgba(255, 206, 86, 0.5)',
+			'rgba(75, 192, 192, 0.5)',
+			'rgba(153, 102, 255, 0.5)',
+			'rgba(255, 159, 64, 0.5)'
+
+		],
+		borderColor: [
+			'rgba(255, 99, 132, 1)',
+			'rgba(54, 162, 235, 1)',
+			'rgba(255, 206, 86, 1)',
+			'rgba(75, 192, 192, 1)',
+			'rgba(153, 102, 255, 1)',
+			'rgba(255, 159, 64, 1)'
+		],
+		pointBorderWidth: 1,
+		pointHoverRadius: 7,
+		pointHoverBorderWidth: 2,
+		pointRadius: 5,
+		fill: true,
+		borderWidth: 2,
+        },
+
+	]
+    },
+	options: {
+		responsive: true,
+		maintainAspectRatio: false,
+		scales: {
+			y: {
+				beginAtZero: true
+			}
+		}
+	}
+});
+</script>
+
+{% endblock scripts %}
+
+{% endblock body %}

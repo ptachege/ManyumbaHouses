@@ -1,0 +1,40 @@
+{% extends 'HouseListing/default_listing_base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/selects/select2.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_select2.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/inputs/inputmask.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/validation/validate.min.js'%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/extensions/cookie.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/components_collapsible.js' %}"></script>
+<!-- <script src="{% static 'HouseListing/global_assets/js/demo_pages/form_checkboxes_radios.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/switchery.min.js '%}"></script> -->
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/switch.min.js '%}"></script> -->
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/wizards/steps.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_wizard.js' %}"></script>
+<!-- <script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/purify.min.js' %}"></script> -->
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/plugins/sortable.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/uploaders/fileinput/fileinput.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/uploader_bootstrap.js' %}"></script>
+
+
+
+
+{% endblock header %}
+
+{% block body %}
+
+{% include 'HouseListing/include_create_listing.html' %}
+
+{% endblock body %}
+
+
+{% block scripts %}
+
+{% endblock scripts %}

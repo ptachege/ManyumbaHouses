@@ -1,0 +1,155 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/main/jquery.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/main/bootstrap.bundle.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/loaders/blockui.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/selects/select2.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_layouts.js '%}"></script>
+
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid my-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+
+			<div class="card">
+				<div class="card-body">
+					<div class="col-md-12">
+						<form action="" method="POST" enctype="multipart/form-data" id="personForm" data-cities-url="{% url 'HouseListing:load_houses' %}" tenants-url="{% url 'HouseListing:load_tenants' %}">
+							{% csrf_token %}
+							<fieldset>
+								<legend class="font-weight-semibold" style="font-size: 20px;"><i class="icon-file-plus mr-2"
+										style="font-size: 20px;"></i> Create Lease
+								</legend>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Select Property:</label>
+											{{form.apartment}}
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Select House:</label>
+											{{form.house}}
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">										
+											<div class="form-group">
+												<label>Select Tenant:</label>
+                                                {{form.tenant}}
+												
+											</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Start Date:</label>
+											<input type="date" id="id_lease_end_date" required name="lease_end_date"
+												class="form-control border-teal border-1 required">
+												<!-- {{form.lease_end_date}} -->
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="d-block">Upload Lease Documents:</label>
+											
+											<div class="custom-file">
+												<input type="file" required class="custom-file-input" name="lease_documents" id="customFile">
+												<label class="custom-file-label" for="customFile">Choose file</label>
+											</div>
+											<span class="form-text text-muted">Accepted formats: *pdf 2Mb</span>
+											
+										</div>
+										<!-- <div class="form-group">
+											<label class="d-block">Upload Lease Documents:</label>
+											<input type="file" required name="lease_documents" id="id_lease_documents" class="custom-file-input">
+											
+										</div> -->
+									</div>
+
+										<div class="form-group" style="visibility: hidden;">
+											<div class="form-check my-4 ml-3">
+												<label class="form-check-label">
+													<input type="checkbox" checked name="current_status" class="form-input-styled" data-fouc>
+													Current Status
+												</label>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+
+								<div class="text-right">
+									<button type="submit" id="lease_register" class="btn btn-primary"
+											
+									{% if request.user.userprofile.user_account_type == 'Demo' %}
+									disabled										
+									{% endif %}
+									>Register Lease <span id="spinnerlease" class=""></span></button>
+								</div>
+
+
+							</fieldset>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>
+{% block script%}
+<script type="text/javascript">
+	$(document).ready(function(){
+		var url = $('#personForm').attr('tenants-url');
+		var apartmentId = $(this).val();
+		console.log('ajax');
+
+		$.ajax({
+			url: url,
+			data: {
+				'apartment': apartmentId
+			},
+			success: function (data) {
+				$('#id_tenant').html(data);
+			}
+		});		
+	});
+    $('#id_apartment').change(function(){
+        var url = $('#personForm').attr('data-cities-url');
+        var apartmentId = $(this).val();
+
+        $.ajax({
+            url: url,
+            data: {
+                'apartment': apartmentId
+            },
+            success: function(data){
+                $('#id_house').html(data);
+            }
+        });
+    });
+
+	 $("#personForm").submit(function (e) {
+			e.preventDefault();
+			document.getElementById("lease_register").setAttribute("disabled", true);
+			$("#spinnerlease").addClass("spinner-border spinner-border-sm");
+			this.submit();
+		});
+</script>
+
+  {%endblock script%}
+{% endblock body %}

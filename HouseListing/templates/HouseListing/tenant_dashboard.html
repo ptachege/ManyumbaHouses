@@ -1,0 +1,430 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/plugins/loaders/blockui.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/notifications/sweet_alert.min.js' %}"></script>
+
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/selects/select2.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/forms/styling/uniform.min.js '%}"></script>
+<script src="{% static 'HouseListing/global_assets/js/demo_pages/form_layouts.js '%}"></script>
+
+<style>
+    .balance-card {
+        background-color: #D22D3D; border-color: white; color: white;
+        border-radius: 10px;
+    }
+
+    .balance-card h1 {
+        font-weight: 900;
+
+    }
+
+    .balance-card h6 {
+        font-weight: 400;
+    }
+    .excess-card {
+        background-color: #282F3B; border-color: white; color: white;
+        border-radius: 10px;
+    }
+
+    .excess-card h1 {
+        font-weight: 900;
+
+    }
+
+    .excess-card h6 {
+        font-weight: 400;
+    }
+
+
+    .fw-medium {
+        font-weight: 500;
+    }
+
+    .avatar-sm {
+        height: 3rem;
+        width: 3rem;
+    }
+
+    .avatar-title {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: #B11226;
+        color: #fff;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-weight: 500;
+        height: 100%;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .card-animate {
+        -webkit-transition: all .4s;
+        transition: all .4s;
+    }
+
+    .card-animate:hover {
+        -webkit-transform: translateY(calc(-1.5rem / 5));
+        transform: translateY(calc(-1.5rem / 5));
+        -webkit-box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+        box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+    }
+</style>
+{% endblock header %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row my-4" style="align-items: center!important;">
+        <div class="col-md-6">
+            <div class="card" style="background-color: #252B36; color: #fff;">
+                <div class="card-body text-center">
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <h3 class="my-2 myzindex my-greetings">Hello, {{request.user.userprofile.full_name}} !</h3>
+                    <h6 class="my-3 myzindex">Welcome to your dashboard.</h6>
+        
+                    <a href="{% url 'HouseListing:pay_rent_list' %}" class="btn btn-light btn-lg my-2 myzindex">Pay Rent Now!</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card balance-card" >
+                        <div class="card-body text-center">
+                                <h6>Rent Balance</h6>
+
+                                <h1>Ksh. {{all_invoices_sum|intcomma}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card excess-card">
+                            <div class="card-body text-center">
+                                <h6>Excess Payment</h6>
+                                <h1>Ksh. 0.00</h1>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row my-1">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img src="{% static 'HouseListing/images/user.png' %} " class="img-fluid user-img " />
+                        </div>
+                        <div class="col-md-7">
+                            <div class="container-fluid">
+                                <table class="ml-4">
+                                    <tr>
+                                        <td style="padding-bottom: 10px;"><b>First Name:</b></td>
+                                        <td style="padding-bottom: 10px;" class="pl-4">{{tenant.first_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Last Name:</b></td>
+                                        <td class="pl-4">{{tenant.last_name}}</td>
+                                    </tr>
+                                </table>
+                                <center>
+                                    
+                                    <a href="" data-toggle="modal" data-target="#edit_modal"
+                                    class="btn btn-outline-dark btn-sm my-4" style="border-radius: 5px;">
+                                    <i class="icon-pencil5 mr-1"></i> Edit profile</a>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="row mt-3">
+                        <div class="col-md-12 text-center mb-4 mb-md-0">
+                            <a href="" data-toggle="modal" data-target="#vacate_notice" class="btn btn-outline-dark btn-sm my-btn-width
+        							{% if request.user.userprofile.user_account_type == 'Demo' %}
+        							disabled										
+        							{% endif %}
+        							"><i class="mi-directions-walk"></i> Vacate Notice</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row my-2">
+                        <div class="col-6 text-center"><b>
+                            <i class="icon-man-woman mr-1"></i> Gender:</b></div>
+                        <div class="col-6 text-left">{{tenant.gender}}</div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-6 text-center">
+                            <b>
+                                <i class="icon-phone mr-1"></i> Phone:
+                            </b>
+                        </div>
+                        <div class="col-6 text-left">{{tenant.contact}}</div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-6 text-center">
+                            <b>
+                                <i class="icon-envelop5 mr-1"></i>
+                                Email:
+                            </b>
+                        </div>
+                        <div class="col-6 text-left">{{tenant.email}}</div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-6 text-center">
+                            <b>
+                                <i class="icon-credit-card mr-1"></i>
+                                Id Number:
+                            </b>
+                        </div>
+                        <div class="col-6 text-left">{{tenant.id_number}}</div>
+                    </div>
+
+                    {% if active_lease %}
+
+                    <div class="row my-2">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                <small>Current Leases:</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% for lease in active_lease %}
+                        <div class="row my-2">
+                            <div class="col-6 text-center">
+                                <b>
+                                    <i class="icon-office mr-1"></i>
+                                    Property:
+                                </b>
+                            </div>
+                            <div class="col-6 text-left">
+                                <b>{{lease.apartment.property_title}}</b> <b class="ml-2">: : {{lease.house.house_code}}</b>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% else %}
+                        <div class="row my-2">
+                            <div class="col-12">
+                                <div class="alert alert-warning text-center">
+                                    No Active Lease associated to this Tenant
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<div id="edit_modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="icon-menu7 mr-2"></i> &nbsp;Edit Tenant.</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="{% url 'HouseListing:edit_tenant' tenant.id %}" method="POST">
+                            {% csrf_token %}
+                            <fieldset>
+                                <legend class="font-weight-semibold" style="font-size: 20px;"><i
+                                        class="icon-user-plus mr-2" style="font-size: 20px;"></i> Edit Tenant.
+                                </legend>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>First name:</label>
+                                            <input type="text" required name="first_name" value="{{tenant.first_name}}"
+                                                placeholder="Eugene" class="form-control border-teal border-1">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Last Name:</label>
+                                            <input type="text" required name="last_name" value="{{tenant.last_name}}"
+                                                placeholder="njuguna" class="form-control border-teal border-1">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Phone #:</label>
+                                            <input type="text" required placeholder="+99-99-9999-9999"
+                                                value="{{tenant.contact}}" name="phone"
+                                                class="form-control border-teal border-1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender:</label>
+                                            <select name="gender" required data-placeholder="Select Gender"
+                                                class="form-control  form-control-select2" data-fouc>
+                                                <option value="{{tenant.gender}}">{{tenant.gender}}</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Id Number:</label>
+                                            <input type="text" required placeholder="Id Number"
+                                                value="{{tenant.id_number}}" name="id_number"
+                                                class="form-control border-teal border-1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Email:</label>
+                                            <input type="email" required placeholder="johndoe@hotmail.com"
+                                                value="{{tenant.email}}" name="email"
+                                                class="form-control border-teal border-1">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary" 
+                                    {% if request.user.userprofile.user_account_type == 'Demo' %} disabled {% endif %}
+                                    >Update<i class="icon-checkmark2 ml-2"></i></button>
+                                </div>
+
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div id="vacate_notice" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="mi-directions-walk mr-2"></i> &nbsp;Vacate Notice.</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="{% url 'HouseListing:vacation_notice' %}" method="POST">
+                            {% csrf_token %}
+                            <fieldset>
+                               
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Name:</label>
+                                            <input type="text" required name="first_name" value="{{tenant.first_name}} {{tenant.last_name}}"
+                                                placeholder="Eugene" class="form-control" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Date you wish to vacate:</label>
+                                            <input type="date" required name="vacate_date"  class="form-control border-teal border-1">
+                                        </div>
+                                    </div>
+
+                                </div>                               
+
+                                <div class="row">
+
+                                        <div class="col-12">
+                                            <label class="my-2">Select House you'd wish to vacate:</label>
+                                            {% for lease in active_lease %}
+
+                                            <label class="custom-control custom-control-secondary custom-checkbox mb-2">
+                                                <input type="checkbox" name="units" class="custom-control-input" value="{{lease.id}}">
+                                                <span class="custom-control-label">{{lease.apartment.property_title}} : : unit {{lease.house.house_code}}</span>
+                                            </label>
+                                            
+                                            {% endfor %}
+
+                                        </div>                                   
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Remark:</label>
+                                            <textarea type="text" placeholder="Your review and remarks"
+                                                name="remarks"
+                                                class="form-control border-teal border-1"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary" 
+                                    {% if request.user.userprofile.user_account_type == 'Demo' %} disabled {% endif %}
+                                    >Submit<i class="icon-checkmark2 ml-2"></i></button>
+                                </div>
+
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock body %}
+
+    

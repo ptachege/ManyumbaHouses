@@ -1,0 +1,217 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/plugins/loaders/blockui.min.js' %}"></script>
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card my-4">
+				<div class="card-header header-elements-inline" style="background-color:rgb(50,65,72);color: #fff;;">
+					<h5 class="card-title"><i class="icon-libreoffice"></i> &nbsp;All Leases</h5>
+					<div class="header-elements">
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="collapse"></a>
+							<a class="list-icons-item" data-action="reload"></a>
+							<a class="list-icons-item" data-action="remove"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card my-4">
+				<div class="card-body">
+					<ul class="nav nav-tabs nav-tabs-bottom border-bottom-0 nav-justified">
+						<li class="nav-item"><a href="#bottom-justified-divided-tab1" class="nav-link active" data-toggle="tab"><i class="icon-files-empty2 mr-2"></i> Active Leases</a></li>
+						<li class="nav-item"><a href="#bottom-justified-divided-tab2" class="nav-link" data-toggle="tab"> <i class="icon-folder-remove mr-2"></i> Terminated Leases.</a></li>
+					</ul>
+
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="bottom-justified-divided-tab1">
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th><b>#</b></th>
+											<th><b>Apartment</b></th>
+											<th><b>House</b></th>
+											<th><b>Start Date</b></th>
+											<th><b>Current Status</b></th>
+											<th><b>Action</b></th>
+										</tr>
+									</thead>
+									<tbody>
+		
+										{% for lease in all_active_leases %}
+		
+										<tr>
+											<td>{{forloop.counter}}</td>
+											<td>{{lease.apartment}}</td>
+											<td>{{lease.house}}</td>
+											<td>{{lease.lease_end_date}}</td>
+											<td>
+												{% if lease.current_status %}
+												<span class="badge badge-primary">Active</span>
+												
+												{% else %}
+												<span class="badge badge-warning">Terminated</span>
+												{% endif %}
+										
+
+
+											</td>											
+											<td>
+												<!-- <a href="">
+													<i class="icon-eye4" style="color:black;"></i>
+												</a> -->
+
+												<a href="{% url 'HouseListing:terminate_lease' lease.house.id %}"
+
+                                                        class="confirm-delete btn btn-outline-danger btn-sm
+														{% if request.user.userprofile.user_account_type == 'Demo' %}
+														disabled										
+														{% endif %}
+														" title="Delete" data-toggle="modal"
+                                                        data-target="#confirmDeleteModal{{lease.house.id}}"
+                                                        id="deleteButton{{lease.house.id}}"
+														>
+                                                        <i class="icon-user-cancel ml-2" ></i>
+														Terminate
+                                                </a>
+
+												
+											</td>
+										</tr>
+
+                                        <div class="modal fade" id="confirmDeleteModal{{lease.house.id}}" tabindex="-1" caller-id="" role="dialog"
+                                            aria-labelledby="confirmDeleteModalLabel{{lease.house.id}}" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                <div class="container text-center">
+                                                    <h2 class="modal-title" id="">Terminate Lease</h2>
+                                                </div>
+                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">x</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body confirm-delete">
+                                                <div class="container text-center">
+                                                    <i class="icon-warning mb-2" style="color:red; font-size: 50px;"></i><br>
+                                                    <span>Are you sure you want to Terminate this lease?</span><br>
+                                                    <h3>This action is permanent!</h3>
+                                                </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <div class="container">
+                                                    <button style="float:left;" type="button" class="btn btn-primary btn-sm"
+                                                    data-dismiss="modal">Cancel</button>
+                                                    <a href="{% url 'HouseListing:terminate_lease' lease.house.id %}" style="float:right;" type="button" class="btn btn-danger btn-sm"
+                                                    id="confirmDeleteButtonModal">Confirm</a>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+		
+										{% empty %}
+										<tr>
+											<td colspan="7">
+												<div class="alert alert-warning text-center">
+													<p>
+														<i class="icon-warning mr-3"></i> No registered active leases.
+													</p>
+												</div>
+											</td>
+										</tr>
+		
+										{% endfor %}
+		
+									</tbody>
+								</table>
+							</div>
+		
+						</div>
+
+						<div class="tab-pane fade" id="bottom-justified-divided-tab2">
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th><b>#</b></th>
+											<th><b>Apartment</b></th>
+											<th><b>House</b></th>
+											<th><b>Start Date</b></th>
+											<th><b>Expired on</b></th>
+											<th><b>Status</b></th>
+											<th><b>Action</b></th>
+										</tr>
+									</thead>
+									<tbody>
+		
+										{% for lease in all_terminated_leases %}
+		
+										<tr>
+											<td>{{forloop.counter}}</td>
+											<td>{{lease.apartment}}</td>
+											<td>{{lease.house}}</td>
+											<td>{{lease.lease_start_date}}</td>
+											<td>{{lease.lease_end_date}}</td>
+											<td>
+												{% if lease.current_status %}
+												<span class="badge badge-primary">Active</span>
+												<i class="icon-checkmark2"
+													style="color:green; font-size: 25px;"></i>
+												{% else %}
+												<span class="badge badge-warning">Terminated</span>
+												{% endif %}
+												
+
+
+											</td>
+											<td>
+												<a href="#">
+													<i class="icon-eye4" style="color:black;"></i>
+												</a>
+
+												<!-- <a href="">
+													<i class="icon-x ml-2" style="color:red;"></i>
+												</a> -->
+
+												
+											</td>
+										</tr>
+		
+										{% empty %}
+										<tr>
+											<td colspan="7">
+												<div class="alert alert-warning text-center">
+													<p>
+														<i class="icon-warning mr-3"></i> No terminated Leases found.
+													</p>
+												</div>
+											</td>
+										</tr>
+		
+										{% endfor %}
+		
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+{% block scripts %}
+{% endblock scripts %}
+
+{% endblock body %}

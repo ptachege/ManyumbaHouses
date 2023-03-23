@@ -1,0 +1,81 @@
+{% extends 'HouseListing/default_base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'HouseListing/global_assets/js/main/jquery.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/main/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'HouseListing/global_assets/js/plugins/loaders/blockui.min.js' %}"></script>
+
+{% endblock header %}
+
+{% block body %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card my-4">
+				<div class="card-header header-elements-inline" style="background-color:rgb(50,65,72);color: #fff;">
+					<h5 class="card-title"><i class="icon-library2"></i> &nbsp;Registered Tenants</h5>
+					<div class="header-elements">
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="collapse"></a>
+							<a class="list-icons-item" data-action="reload"></a>
+							<a class="list-icons-item" data-action="remove"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card my-4">
+				<div class="card-body">
+					<div class="alert alert-info text-center">
+						Select Property to get the associated tenants
+					</div>
+					<div class="table-responsive">
+						<table class="table datatable-responsive-row-control table-striped table-hover">
+							<thead>
+							<tr>
+								<th></th>
+								<th>#</th>
+								<th>Property Title</th>
+								<th>Type</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+							<tbody>
+
+								{% for property in properties %}
+								<tr>
+									<td>
+									</td>
+									<td>{{forloop.counter}}</td>
+									<td>{{property.property_title}}</td>
+									<td>{{property.type.name}}</td>						
+									<td>
+									<a href="{% url 'HouseListing:tenant_sub_list' property.id %}" class="btn btn-outline-dark btn-sm"
+										>
+									Select
+									</td>
+								</tr>
+								{% empty %}
+								<tr>
+									<td colspan="8">
+									<div class="alert alert-warning text-center">
+										<i class="icon-warning" style="margin-right: 10px"></i> You
+										don't have any registered listings.
+									</div>
+									</td>
+								</tr>
+								{% endfor %}
+							
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+{% block scripts %}
+{% endblock scripts %}
+
+{% endblock body %}

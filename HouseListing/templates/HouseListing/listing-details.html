@@ -1,0 +1,605 @@
+{% extends 'HouseListing/base.html' %} {% block headstyle %}
+{% load humanize %}
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+  integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+{% endblock headstyle %} {% load static %} {% block body %}
+
+<div class="page-wrapper">
+  <div class="content-wrapper">
+    <section class="property-details-wrap pb-75">
+      <div class="container-fluid">
+        <div class="row mx-auto my-auto justify-content-center">
+          <div
+            id="recipeCarousel"
+            class="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner" role="listbox">
+              <div class="carousel-item active">
+                <div class="col-md-6">
+                  <div class="card">
+                    <span class="badge badge-manyumba" >Featured</span>
+                    <div class="card-img">
+                      <img
+                        src="{{property.featured_image.url}}"
+                        class="img-fluid"
+                        style="
+                          max-height: 300px;
+                          min-height: 300px;
+                          object-fit: cover;
+                          min-width: 100%;
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% for image in images %}
+              <div class="carousel-item">
+                <div class="col-md-6">
+                  <div class="card">
+                    <span class="badge badge-manyumba" >{{image.home_tag}}</span>
+                    <div class="card-img">
+                      <img
+                        src="{{image.image.url}}"
+                        class="img-fluid"
+                        style="
+                          max-height: 300px;
+                          min-height: 300px;
+                          object-fit: cover;
+                          min-width: 100%;
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <a
+              class="carousel-control-prev bg-transparent w-aut"
+              href="#recipeCarousel"
+              role="button"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+            </a>
+            <a
+              class="carousel-control-next bg-transparent w-aut"
+              href="#recipeCarousel"
+              role="button"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row mt-4">
+          <div class="col-md-8">
+            <div class="property-details">
+              <div class="row align-items-start">
+                <div class="col-md-8">
+                  <div class="property-title">
+                    <h2>{{property.property_title}}</h2>
+                    <ul class="property-metainfo list-style">
+                      <li>
+                        <i class="flaticon-location"></i>{{property.city.city_name}}
+                      </li>
+                      <li>
+                        <i class="flaticon-square"></i>{{property.area_size}}
+                        Sqft
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <p class="property-price">
+                    KES {{property.price |intcomma}} {% if property.type.name != 'Land' and property.status.property_status == 'For Rent' %} /<span
+                      >month</span
+                    >
+                    {% endif %} <span></span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="property-desc">
+                <h4>Description</h4>
+                
+                {% if property.description %}
+                <p>{{property.description}}. Location: {{property.street}}</p>
+                
+                {% else %}
+                <div class="alert alert-info">
+                  No description for this property at the moment. Check again later.
+                </div>
+                {% endif %}
+                  
+              </div>
+              <div class="property-desc">
+                <h4>Property Details</h4>
+                <div class="row">
+                  <div class="col-md-4">
+                    <ul class="property-features list-style">
+                      <li>Property Type : <span>{{property.type}}</span></li>
+                      <li>
+                        Property Price : <span>KES {{property.price|intcomma}}</span>
+                      </li>
+                      {% if property.type.name != 'Land' and property.type.name != 'Office Space' %}
+                      <li>Bath : <span>{{property.bathrooms}}</span></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <ul class="property-features list-style">
+                      {% if property.type.name != 'Land' and property.type.name != 'Office Space' %}
+                      <li>Rooms : <span>{{property.rooms}}</span></li>
+                      <li>Bedrooms : <span>{{property.bedrooms}}</span></li>
+                      <li>Garages : <span>{{property.garages}}</span></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <ul class="property-features list-style">
+                      <li>
+                        Property Status : <span>{{property.status}}</span>
+                      </li>
+                      <!-- <li>Bedrooms ID : <span>10</span></li> -->
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="property-desc">
+                <h4>Property Features</h4>
+                <div class="row">
+                  <div class="col-md-4">
+                    <ul class="property-annuties list-style">
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Air Conditioned
+                      </li>
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Swimming Pool
+                      </li>
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Fitness Gym
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <ul class="property-annuties list-style">
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Security Garage
+                      </li>
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Window
+                        Coverings
+                      </li>
+                      <li><i class="ri-checkbox-multiple-line"></i>Laundry</li>
+                    </ul>
+                  </div>
+                  <div class="col-md-4">
+                    <ul class="property-annuties list-style">
+                      <li><i class="ri-checkbox-multiple-line"></i>Parking</li>
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Fireplace
+                      </li>
+                      <li>
+                        <i class="ri-checkbox-multiple-line"></i>Refrigerator
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              
+            {% if property.status.property_status == 'For Sale' %}
+                
+          
+
+              <div class="row my-4">
+                <div class="col-12 text-center my-4">
+                   <h3> <span> Financing.</span> <span style="font-size: 17px; font-weight: 500;" class="text-muted"> Interest rates 11% PA </span></h3>
+                </div>
+                 <div class="col-md-6">
+                  <div class="breakup">
+                    <canvas id="pieChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="details">
+                    <div>
+                      <div class="detail">
+                        <p style="color: #333;font-weight: 900;">Amount</p>
+                        <p id="loan-amt-text" style="color: black"></p>
+                      </div>
+                      <input
+                        type="range"
+                        id="loan-amount"
+                        value="{{property.price}}"
+                        min="0"
+                        max="30000000"
+                        step="1000"
+                      />
+                    </div>
+                    <div>
+                      <div class="detail">
+                        <p style="color: #333; font-weight: 900;">Duration</p>
+                        <p id="loan-period-text" style="color: black"></p>
+                      </div>
+                      <input
+                        type="range"
+                        id="loan-period"
+                        min="1"
+                        max="30"
+                        step="1"
+                      />
+                    </div>
+           
+                    <div class="footer">
+                      <p id="price-container"><span id="price"><b> 0 </b></span> /mo</p>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+
+              <div class="row">
+                        <div class="col-md-4">
+                            <div class="chart-details">
+                                <p style="color: #333;" class="text-muted">Principal</p>
+                                <p id="cp" style="color: black; font-size: 17px"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="chart-details">
+                                <p style="color: #333;" class="text-muted">Interest</p>
+                                <p id="ci" style="color: black; font-size: 17px"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">                        
+                            <div class="chart-details">
+                            <p style="color: #333;" class="text-muted">Total Payable</p>
+                            <p id="ct" style="color: black; font-size: 17px"></p>
+                            </div>
+                        </div>
+              </div>
+
+              <div class="row my-4">
+                <div class="col-sm-6 mb-3">
+                  <p>See if you are qualified for this mortgage. By clicking on "Find my eligibility"</p>
+                </div>
+                <div class="col-sm-6 text-center">
+                  <a href="{% url 'HouseListing:mortgages_leads' property.price property.id %}" class="btn style2">Find My Eligibility</a>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if property.status.property_status == 'For Rent' and property.type.name != 'Land' %}
+            <hr>
+            <div class="row my-4">
+              <div class="col-sm-12 text-center mb-3">
+                <p>See if you are qualified for this mortgage. By clicking on "Find my eligibility"</p>
+              </div>
+              <div class="col-sm-12 text-center">
+                <a href="{% url 'HouseListing:create_loan_relocation_lead_detail' property.id %}" class="btn style2">Find My
+                  Eligibility</a>
+              </div>
+            </div>
+            {% endif %}
+        
+            </div>
+          </div>
+          <div class="col-md-4" >
+            <div class="sidebar mb-4">
+              <div class="sidebar-widget">
+                <h6 class="mb-2 text-muted">Share Ad</h6>
+                <div class="row">
+                    <div class="col-2 offset-2 col-sm-3 offset-sm-0 col-lg-2 offset-lg-2">
+                      <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/listing_details/70/%3Futm_source%3Dfacebook%26utm_medium%3Dsocial%26utm_campaign%3Dshare-button">
+                        <img class="social-icons" src="{% static 'HouseListing/images/facebook.png' %}" alt="">
+                      </a>
+                    </div>
+                    <div class="col-2 col-sm-3 col-lg-2">
+                       <a target="_blank" href="https://wa.me/?text=www.manyumba.com{{request.get_full_path}}">
+                         <img class="social-icons" src="{% static 'HouseListing/images/whatsapp.png' %}" alt="">
+                        </a>
+                    </div>
+                    <div class="col-2 col-sm-3 col-lg-2">
+                       <a target="_blank" href="https://www.facebook.com/dialog/send?app_id=155649911692809&link=www.manyumba.co{{request.url}}&redirect_uri=https://manyumba.co">
+                         <img class="social-icons" src="{% static 'HouseListing/images/messenger.png' %}" alt="">
+                        </a>
+                    </div>
+                    <div class="col-2 col-sm-3 col-lg-2">
+                       <a  onclick="CopyLink(event)" href="">
+                         <img class="social-icons" src="{% static 'HouseListing/images/link.png' %}" alt="">
+                        </a>
+                    </div>
+                </div>
+             
+              </div>
+            </div>
+            <div class="sidebar">
+              <div class="sidebar-widget">
+                <h4>Schedule Tour</h4>
+                <form action="{% url 'HouseListing:schedule_tour' property.id %}" id="myform" method="post" class="filter-widget">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input type="text" placeholder="Your Name" id="name" name="Name" />
+                  </div>
+                  <div class="form-group">
+                    <input type="number" placeholder="Phone Number" id="phone" name="Phone" />
+                  </div>
+                  <div class="form-group">
+                    <input type="date" name="date" id="date" />
+                  </div>
+                  <div class="form-group">
+                    <textarea
+                      name="booking_msg"
+                      id="booking_msg"
+                      cols="30"
+                      rows="10"
+                      placeholder="Your Message"
+                    >Hi! I would like to know more about {{property.property_title}} in {{property.city.city_name}} listed on Www.manyumba.co</textarea>
+                  </div>
+                  <div class="form-group">
+                    <center>
+                    <button class="btn style2" id="schedule">Schedule</button>
+                    </center>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <input type="text" id="copyurl" name="copyurl" value="https://manyumba.co{{request.path}}" style="visibility: hidden;">
+</div>
+
+<script src="{% static 'HouseListing/assets/js/jquery.min.js' %}"></script>
+
+
+
+<script>
+  function CopyLink(e){
+    e.preventDefault()
+    var copyurl = document.getElementById('copyurl');
+    copyurl.style.visibility="visible";
+    // copyurl = 'www.manyumba.co' + copyurl
+    copyurl.select();
+    document.execCommand('copy')
+    copyurl.style.visibility="hidden"
+
+     $(".bootstrap-growl").remove();
+          $.bootstrapGrowl('Link copied to clipboard', {
+            ele: 'body', // which element to append to
+            type: 'success',
+            align: 'center',
+            delay: 3000,
+            offset: { from: 'top', amount: 70 },
+            width: 300,
+            allow_dismiss: true,
+            stackup_spacing: 10
+
+          }
+          )
+
+  }
+
+  // cookies for form data
+  
+  // Original JavaScript code by Chirp Internet: chirpinternet.eu
+  // Please acknowledge use of this code by including this header.
+  var today = new Date();
+  var expiry = new Date(today.getTime() + 30 * 24 * 3600 * 1000); // plus 30 days
+
+  function setCookie(name, value)
+  {
+    document.cookie=name + "=" + escape(value) + "; path=/; expires=" + expiry.toGMTString();
+  }
+
+   function getCookie(name)
+  {
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return (value != null) ? unescape(value[1]) : null;
+  }
+
+  
+
+  $('#myform').on('submit', function(e) {
+    name = $('#name').val()
+    phone = $('#phone').val()
+    date = $('#date').val()
+
+    e.preventDefault()
+
+    setCookie("name", name);
+    setCookie("phone", phone);
+    setCookie("date", date);
+    $(this).submit()
+
+  });
+
+
+  $( document ).ready(function() {
+    console.log(getCookie("date"));
+    if(name = getCookie("name")) document.getElementById('name').value = name;
+    if(phone = getCookie("phone")) document.getElementById('phone').value = phone;
+    if(date = getCookie("date")) document.getElementById('date').value = date;
+  });
+
+
+
+  
+  
+
+</script>
+
+
+
+<script>
+  let items = document.querySelectorAll(".carousel .carousel-item");
+
+  items.forEach((el) => {
+    const minPerSlide = 2;
+    let next = el.nextElementSibling;
+    for (var i = 1; i < minPerSlide; i++) {
+      if (!next) {
+        // wrap carousel by using first child
+        next = items[0];
+      }
+      let cloneChild = next.cloneNode(true);
+      el.appendChild(cloneChild.children[0]);
+      next = next.nextElementSibling;
+    }
+  });
+</script>
+
+{% if property.status.property_status == 'For Sale' %}
+
+<script>
+  var P, R, N, pie, line;
+  var loan_amt_slider = document.getElementById("loan-amount");
+  var loan_period_slider = document.getElementById("loan-period");
+
+  // update loan amount
+  loan_amt_slider.addEventListener("input", (self) => {
+    document.querySelector("#loan-amt-text").innerText =
+      "Ksh " + parseInt(self.target.value).toLocaleString("en-US");
+    P = parseFloat(self.target.value);
+    displayDetails();
+  });
+
+
+    R = 11
+
+  // update loan period
+  loan_period_slider.addEventListener("input", (self) => {
+    document.querySelector("#loan-period-text").innerText =
+      self.target.value + " years";
+    N = parseFloat(self.target.value);
+    displayDetails();
+  });
+
+  // calculate total Interest payable
+  function calculateLoanDetails(p, r, emi) {
+    /*
+		p: principal
+		r: rate of interest
+		emi: monthly emi
+	*/
+    let totalInterest = 0;
+    let yearlyInterest = [];
+    let yearPrincipal = [];
+    let years = [];
+    let year = 1;
+    let [counter, principal, interes] = [0, 0, 0];
+    while (p > 0) {
+      let interest = parseFloat(p) * parseFloat(r);
+      p = parseFloat(p) - (parseFloat(emi) - interest);
+      totalInterest += interest;
+      principal += parseFloat(emi) - interest;
+      interes += interest;
+      if (++counter == 12) {
+        years.push(year++);
+        yearlyInterest.push(parseInt(interes));
+        yearPrincipal.push(parseInt(principal));
+        counter = 0;
+      }
+    }
+    return totalInterest;
+  }
+
+  // calculate details
+  function displayDetails() {
+    let r = parseFloat(R) / 1200;
+    let n = parseFloat(N) * 12;
+
+    let num = parseFloat(P) * r * Math.pow(1 + r, n);
+    let denom = Math.pow(1 + r, n) - 1;
+    let emi = parseFloat(num) / parseFloat(denom);
+
+    let payabaleInterest = calculateLoanDetails(P, r, emi);
+
+    let opts = '{style: "decimal", currency: "US"}';
+
+    document.querySelector("#cp").innerText =
+      "Ksh " + parseFloat(P).toLocaleString("en-US", opts);
+
+    document.querySelector("#ci").innerText =
+      "Ksh " + parseFloat(payabaleInterest).toLocaleString("en-US", opts) ;
+
+    document.querySelector("#ct").innerText =
+     "Ksh " + parseFloat(parseFloat(P) + parseFloat(payabaleInterest)).toLocaleString(
+        "en-US",
+        opts
+      );
+
+    document.querySelector("#price").innerText =
+      "Ksh " + parseFloat(emi).toLocaleString("en-US", opts);
+
+    pie.data.datasets[0].data[0] = P;
+    pie.data.datasets[0].data[1] = payabaleInterest;
+    pie.update();
+  }
+
+  // Initialize everything
+  function initialize() {
+    document.querySelector("#loan-amt-text").innerText =
+      "Ksh " + parseInt(loan_amt_slider.value).toLocaleString("en-US");
+    P = parseFloat(document.getElementById("loan-amount").value);
+
+    document.querySelector("#loan-period-text").innerText =
+      loan_period_slider.value + " years";
+    N = parseFloat(document.getElementById("loan-period").value);
+
+    pie = new Chart(document.getElementById("pieChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Principal", "Interest"],
+        datasets: [
+          {
+            label: "Home Loan Details",
+            data: [0, 0],
+            backgroundColor: ["rgb(0,0,0)", "rgb(236,51,35)"],
+            hoverOffset: 4,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: "Payment Breakup",
+          },
+        },
+      },
+    });
+    displayDetails();
+  }
+  initialize();
+</script>
+
+
+
+
+{% endif %}
+
+{% endblock body %}

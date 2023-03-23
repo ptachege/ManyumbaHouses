@@ -1,0 +1,4 @@
+<option value="">-------</option>
+{% for tenant in tenants %}
+<option value="{{tenant.pk}}">{{tenant.first_name}} {{tenant.last_name}}</option>
+{% endfor %}
